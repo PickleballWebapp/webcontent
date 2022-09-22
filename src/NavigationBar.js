@@ -14,7 +14,7 @@ export default function NavigationBar() {
                             <NavDropdown.Item href="/scores">Live Scores</NavDropdown.Item>
                             <NavDropdown.Item href="/rankings">Rankings</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/myScores">My Scores</NavDropdown.Item>
+                            <NavDropdown.Item href="/user">My Scores</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav pullRight>
