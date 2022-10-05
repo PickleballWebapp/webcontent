@@ -5,7 +5,7 @@ export default function NavigationBar({signOut}) {
     return (
         <Navbar bg="light" expand="md">
             <Container>
-                <Navbar.Brand href="/home">Pickleball App</Navbar.Brand>
+                <Navbar.Brand href="/">Vandy Pickleball</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
@@ -18,7 +18,7 @@ export default function NavigationBar({signOut}) {
                             <NavDropdown.Item href="/user">My Scores</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <Nav pullRight>
+                    <Nav>
                         <Nav.Link eventKey={1} onClick={signOut}>
                             Logout
                         </Nav.Link>

@@ -2,10 +2,16 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const UserType = {
+  "ADMIN": "ADMIN",
+  "SCORER": "SCORER",
+  "PLAYER": "PLAYER"
+};
 
-
-const { User } = initSchema(schema);
+const { Game, User } = initSchema(schema);
 
 export {
-  User
+  Game,
+  User,
+  UserType
 };

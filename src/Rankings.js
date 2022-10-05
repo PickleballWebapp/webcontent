@@ -1,6 +1,22 @@
 import {Col, Container, Row, Table} from "react-bootstrap";
 
+import React, { useState, useEffect } from "react";
+import { API } from "aws-amplify";
+import { listUsers } from "./graphql/queries";
+
 export default function Rankings() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    async function fetchUsers() {
+        const apiData = await API.graphql({ query: listUsers });
+        const usersFromAPI = apiData.data.listUsers.items;
+        setUsers(usersFromAPI);
+    }
+
     return (
         <Container fluid>
             <Row>
@@ -12,31 +28,23 @@ export default function Rankings() {
                     <Table striped bordered hover>
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th>Rank</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Record (W-L)</th>
+                            <th>Win Rate (%)</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Sam</td>
-                            <td>Feifer</td>
-                            <td>100-0</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jack</td>
-                            <td>Harrington</td>
-                            <td>0-100</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Joe</td>
-                            <td>Napoli</td>
-                            <td>0-0</td>
-                        </tr>
+                        {[...users].sort(comparator).map((user, index) => (
+                            <tr key={user.id}>
+                                <td>{index+1}</td>
+                                <td>{user.first}</td>
+                                <td>{user.last}</td>
+                                <td>{user.wins}-{user.losses}</td>
+                                <td>{winRate(user.wins,user.losses)}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </Table>
                 </Col>
@@ -44,4 +52,14 @@ export default function Rankings() {
             </Row>
         </Container>
     );
+}
+
+function winRate(wins, losses) {
+    if(wins === losses === 0) return 0;
+    if(losses === 0) return 0;
+    return (wins/(wins+losses)*100).toFixed(2);
+}
+
+function comparator(usera, userb) {
+    return winRate(userb.wins, userb.losses) - winRate(usera.wins, usera.losses);
 }

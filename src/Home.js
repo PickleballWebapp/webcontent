@@ -1,23 +1,21 @@
 import {Card, Col, Container, Row} from "react-bootstrap";
-import Button from "react-bootstrap/Button";
 
-export default function Home() {
+export default function Home({user}) {
     return (
-       // <h1 align="center">Welcome to the Pickleball Web App</h1>
         <Container fluid>
             <Row>
                 <Col />
                 <Col xs={8}>
                     <Row>
                         <h1 className="text-center p-5">
-                            Vanderbilt Pickleball App
+                            Welcome, {user.username}!
                         </h1>
                         <Col>
                             <Card style={{ width: '18rem' }}>
                                 <Card.Body>
                                     <Card.Title className="text-center">Scores</Card.Title>
                                     <Card.Text>
-                                        Keep score of your pickleball game!
+                                        Keep score of your Pickleball game!
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

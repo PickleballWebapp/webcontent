@@ -1,6 +1,72 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createGame = /* GraphQL */ `
+  mutation CreateGame(
+    $input: CreateGameInput!
+    $condition: ModelGameConditionInput
+  ) {
+    createGame(input: $input, condition: $condition) {
+      id
+      date
+      complete
+      player1
+      player2
+      player3
+      player4
+      server
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateGame = /* GraphQL */ `
+  mutation UpdateGame(
+    $input: UpdateGameInput!
+    $condition: ModelGameConditionInput
+  ) {
+    updateGame(input: $input, condition: $condition) {
+      id
+      date
+      complete
+      player1
+      player2
+      player3
+      player4
+      server
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteGame = /* GraphQL */ `
+  mutation DeleteGame(
+    $input: DeleteGameInput!
+    $condition: ModelGameConditionInput
+  ) {
+    deleteGame(input: $input, condition: $condition) {
+      id
+      date
+      complete
+      player1
+      player2
+      player3
+      player4
+      server
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -10,6 +76,11 @@ export const createUser = /* GraphQL */ `
       id
       first
       last
+      wins
+      losses
+      games
+      email
+      type
       createdAt
       updatedAt
       _version
@@ -27,6 +98,11 @@ export const updateUser = /* GraphQL */ `
       id
       first
       last
+      wins
+      losses
+      games
+      email
+      type
       createdAt
       updatedAt
       _version
@@ -44,6 +120,11 @@ export const deleteUser = /* GraphQL */ `
       id
       first
       last
+      wins
+      losses
+      games
+      email
+      type
       createdAt
       updatedAt
       _version

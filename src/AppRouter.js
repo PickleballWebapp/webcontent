@@ -3,11 +3,10 @@ import Home from "./Home";
 import Scheduling from "./Scheduling";
 import Scores from "./Scores";
 import Rankings from "./Rankings";
-import MyScores from "./MyScores";
 import Login from "./Login";
 import User from "./User";
 
-export default function AppRouter() {
+export default function AppRouter({user}) {
     return(
         <BrowserRouter>
             <Routes>
@@ -15,7 +14,7 @@ export default function AppRouter() {
                     <Navigate to="/home" />
                 }/>
                 <Route path="/home" element={
-                    <Home />
+                    <Home user={user} />
                 }/>
                 <Route path="/scheduling" element={
                     <Scheduling />
