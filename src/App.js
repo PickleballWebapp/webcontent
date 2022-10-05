@@ -3,9 +3,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import AppRouter from "./AppRouter";
 import {Container} from "react-bootstrap";
 
+import "@aws-amplify/ui-react/styles.css";
+import {withAuthenticator} from "@aws-amplify/ui-react";
+
 function App() {
   return (
-      //put everything inside of div because you can only render one top level thing at a time
     <div>
         <NavigationBar />
         <Container fluid className="pt-3">
@@ -15,4 +17,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);

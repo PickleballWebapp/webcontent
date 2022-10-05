@@ -10,6 +10,14 @@
       "StackName": "amplify-pickleballapp-dev-123049",
       "StackId": "arn:aws:cloudformation:us-east-1:312042277619:stack/amplify-pickleballapp-dev-123049/74ce9fc0-44d3-11ed-ab9f-0ebc7567a9a9",
       "AmplifyAppId": "db4jcttba1201"
+    },
+    "categories": {
+      "auth": {
+        "pickleballappda7eadc5": {}
+      },
+      "api": {
+        "pickleballapp": {}
+      }
     }
   }
 }

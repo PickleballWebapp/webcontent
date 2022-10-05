@@ -1,6 +1,6 @@
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 
-export default function NavigationBar() {
+export default function NavigationBar({signOut}) {
     return (
         <Navbar bg="light" expand="md">
             <Container>
@@ -18,7 +18,7 @@ export default function NavigationBar() {
                         </NavDropdown>
                     </Nav>
                     <Nav pullRight>
-                        <Nav.Link eventKey={1} href="/login">
+                        <Nav.Link eventKey={1} onClick={signOut}>
                             Login
                         </Nav.Link>
                     </Nav>
