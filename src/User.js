@@ -1,6 +1,6 @@
 import React from 'react';
 import {useLocation} from "react-router-dom";
-import {Col, Container, Row, Table} from "react-bootstrap";
+import {Col, Row, Table} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
 export default function User() {
