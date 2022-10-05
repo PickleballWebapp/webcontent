@@ -6,10 +6,10 @@ import {Container} from "react-bootstrap";
 import "@aws-amplify/ui-react/styles.css";
 import {withAuthenticator} from "@aws-amplify/ui-react";
 
-function App() {
+function App({signOut}) {
   return (
     <div>
-        <NavigationBar />
+        <NavigationBar signOut={signOut} />
         <Container fluid className="pt-3">
             <AppRouter />
         </Container>
