@@ -5,6 +5,7 @@ import Scores from "./Scores";
 import Rankings from "./Rankings";
 import Login from "./Login";
 import User from "./User";
+import GameScore from "./GameScore";
 
 export default function AppRouter({user}) {
     return(
@@ -21,6 +22,9 @@ export default function AppRouter({user}) {
                 }/>
                 <Route path="/scores" element={
                     <Scores />
+                }/>
+                <Route path="/score" element={
+                    <GameScore />
                 }/>
                 <Route path="/rankings" element={
                     <Rankings />

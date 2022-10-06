@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "pickleballappda7eadc5_identitypool_da7eadc5",
+    "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "pickleda7eadc5",
-    "userPoolName": "pickleballappda7eadc5_userpool_da7eadc5",
+    "resourceNameTruncated": "picklefa69aa9c",
+    "userPoolName": "pickleballapp",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -14,31 +14,32 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
-    "emailVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Vandy Pickleball Club - New Account",
+    "emailVerificationMessage": "Thanks for creating an account. Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "email",
+      "name"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-      "email"
-    ],
-    "userpoolClientReadAttributes": [
-      "email"
-    ],
-    "userpoolClientLambdaRole": "pickleda7eadc5_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [],
+    "userpoolClientReadAttributes": [],
+    "userpoolClientLambdaRole": "picklefa69aa9c_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "da7eadc5",
-    "resourceName": "pickleballappda7eadc5",
+    "sharedId": "fa69aa9c",
+    "resourceName": "pickleballapp",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
-    "userPoolGroupList": [],
     "serviceName": "Cognito",
+    "useDefault": "manual",
+    "userPoolGroups": false,
+    "userPoolGroupList": [],
+    "adminQueries": false,
+    "thirdPartyAuth": false,
+    "authProviders": [],
     "usernameCaseSensitive": false,
     "useEnabledMfas": true
   }

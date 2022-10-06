@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "pickleballappda7eadc5": {}
+        "pickleballappda7eadc5": {},
+        "pickleballapp": {}
       },
       "api": {
         "pickleballapp": {}

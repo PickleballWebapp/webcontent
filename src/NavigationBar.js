@@ -12,14 +12,14 @@ export default function NavigationBar({signOut}) {
                         <Nav.Link href="/home">Home</Nav.Link>
                         <Nav.Link href="/scheduling">Scheduling</Nav.Link>
                         <NavDropdown title="Scores" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="/scores">Live Scores</NavDropdown.Item>
+                            <NavDropdown.Item href="/scores">Game Scores</NavDropdown.Item>
                             <NavDropdown.Item href="/rankings">Rankings</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="/user">My Scores</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav>
-                        <Nav.Link eventKey={1} onClick={signOut}>
+                        <Nav.Link onClick={signOut}>
                             Logout
                         </Nav.Link>
                     </Nav>

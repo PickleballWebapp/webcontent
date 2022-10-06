@@ -22,7 +22,9 @@ export declare class Game {
   readonly player2?: string | null;
   readonly player3?: string | null;
   readonly player4?: string | null;
-  readonly server?: string | null;
+  readonly team1serves?: boolean | null;
+  readonly team1score?: number | null;
+  readonly team2score?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Game, GameMetaData>);

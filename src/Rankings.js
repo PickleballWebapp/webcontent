@@ -29,8 +29,7 @@ export default function Rankings() {
                         <thead>
                         <tr>
                             <th>Rank</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th>Name</th>
                             <th>Record (W-L)</th>
                             <th>Win Rate (%)</th>
                         </tr>
@@ -39,8 +38,7 @@ export default function Rankings() {
                         {[...users].sort(comparator).map((user, index) => (
                             <tr key={user.id}>
                                 <td>{index+1}</td>
-                                <td>{user.first}</td>
-                                <td>{user.last}</td>
+                                <td>{user.first} {user.last}</td>
                                 <td>{user.wins}-{user.losses}</td>
                                 <td>{winRate(user.wins,user.losses)}</td>
                             </tr>
@@ -54,12 +52,18 @@ export default function Rankings() {
     );
 }
 
+/**
+ * Determines win rate given wins and losses
+ */
 function winRate(wins, losses) {
     if(wins === losses === 0) return 0;
     if(losses === 0) return 0;
-    return (wins/(wins+losses)*100).toFixed(2);
+    return (wins/(wins+losses)*100).toFixed(1);
 }
 
+/**
+ * Determines which of two users has a higher win rate.
+ */
 function comparator(usera, userb) {
     return winRate(userb.wins, userb.losses) - winRate(usera.wins, usera.losses);
 }

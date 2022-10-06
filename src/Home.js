@@ -8,7 +8,7 @@ export default function Home({user}) {
                 <Col xs={8}>
                     <Row>
                         <h1 className="text-center p-5">
-                            Welcome, {user.username}!
+                            Welcome, {user.attributes.name}!
                         </h1>
                         <Col>
                             <Card style={{ width: '18rem' }}>
@@ -40,9 +40,6 @@ export default function Home({user}) {
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Row>
-                            {/* might want to add a login button but already have it in the top right*/}
-                        </Row>
                     </Row>
                 </Col>
                 <Col />

@@ -52,10 +52,24 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "server": {
-                    "name": "server",
+                "team1serves": {
+                    "name": "team1serves",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "team1score": {
+                    "name": "team1score",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "team2score": {
+                    "name": "team2score",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -217,5 +231,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "c92c9c6a69bc722928ac2535d9df10d8"
+    "version": "252333fbd5dbb2a4184b15268c206c61"
 };

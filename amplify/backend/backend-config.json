@@ -23,7 +23,7 @@
     }
   },
   "auth": {
-    "pickleballappda7eadc5": {
+    "pickleballapp": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -32,7 +32,8 @@
         "socialProviders": [],
         "usernameAttributes": [],
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "NAME"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,

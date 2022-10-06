@@ -1,85 +1,50 @@
-import {Card, Col, Container, Row} from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import {Col, Container, Row, Table} from "react-bootstrap";
+import React, {useEffect, useState} from "react";
+import {API} from "aws-amplify";
+import {listGames} from "./graphql/queries";
+import {Link} from "react-router-dom";
 
 export default function Scores() {
+    const [games, setGames] = useState([]);
+
+    useEffect(() => {
+        fetchGames();
+    }, []);
+
+    async function fetchGames() {
+        const apiData = await API.graphql({ query: listGames });
+        setGames(apiData.data.listGames.items);
+    }
+
     return (
         <Container fluid>
             <Row>
-               <Col />
-               <Col xs={8}>
-                   <h1 className="text-center p-5">
-                       Scoreboard
-                   </h1>
-                   <div className="d-flex justify-content-center">
-                       <Card style={{ width: '18rem' }} >
-                           <Card.Body>
-                               <Card.Text>
-                                   <h1 className="text-center">
-                                       5-0
-                                   </h1>
-                               </Card.Text>
-                           </Card.Body>
-                       </Card>
-                   </div>
-                   <Row>
-                       <Col>
-                           <h2 className="text-center p-5">
-                               Team 1
-                           </h2>
-                           <Row>
-                               <Col>
-                                   <h4 className="text-center">
-                                       Sam Feifer
-                                   </h4>
-                               </Col>
-                               <Col>
-                                   <h4 className="text-center">
-                                       Nick Tilson
-                                   </h4>
-                               </Col>
-                           </Row>
-                           <Row>
-                               <Col>
-                                   <Button variant="success">Add Point</Button>{' '}
-                               </Col>
-                               <Col>
-                                   <Button variant="primary">Give Serve</Button>{' '}
-                               </Col>
-                               <Col>
-                                   <Button variant="danger">Subtract Point</Button>{' '}
-                               </Col>
-                           </Row>
-                       </Col>
-                       <Col>
-                           <h2 className="text-center p-5">
-                               Team 2
-                           </h2>
-                           <Row>
-                               <Col>
-                                   <h4 className="text-center">
-                                       Owen McCarthy
-                                   </h4>
-                               </Col>
-                               <Col>
-                                   <h4 className="text-center">
-                                       Jack Harrington
-                                   </h4>
-                               </Col>
-                           </Row>
-                           <Row>
-                               <Col>
-                                   <Button variant="success">Add Point</Button>{' '}
-                               </Col>
-                               <Col>
-                                   <Button variant="primary">Give Serve</Button>{' '}
-                               </Col>
-                               <Col>
-                                   <Button variant="danger">Subtract Point</Button>{' '}
-                               </Col>
-                           </Row>
-                       </Col>
-                   </Row>
-               </Col>
+                <Col />
+                <Col xs={8}>
+                    <h1 className="text-center p-5">
+                        Game Scores
+                    </h1>
+                    <Table striped bordered hover>
+                        <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Team 1</th>
+                            <th>Team 2</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {games.map((game) => (
+                            <tr key={game.id}>
+                                <td>{<Link to="/score" state={{gameId: game.id}}>{game.complete ? "Complete" : "Active"}</Link>}</td>
+                                <td>{game.date}</td>
+                                <td>{game.player1} & {game.player2}</td>
+                                <td>{game.player3} & {game.player4}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                </Col>
                 <Col />
             </Row>
         </Container>

@@ -12,7 +12,9 @@ type Game @model @auth(rules: [{allow: public}]) {
   player2: ID
   player3: ID
   player4: ID
-  server: ID
+  team1serves: Boolean
+  team1score: Int
+  team2score: Int
 }
 
 type User @model @auth(rules: [{allow: public}]) {
