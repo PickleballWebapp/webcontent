@@ -5,13 +5,13 @@ export default function Home({user}) {
         <Container fluid>
             <Row>
                 <Col />
-                <Col xs={8}>
+                <Col xs={10} lg={8}>
                     <Row>
                         <h1 className="text-center p-5">
                             Welcome, {user.attributes.name}!
                         </h1>
                         <Col>
-                            <Card style={{ width: '18rem' }}>
+                            <Card>
                                 <Card.Body>
                                     <Card.Title className="text-center">Scores</Card.Title>
                                     <Card.Text>
@@ -21,7 +21,7 @@ export default function Home({user}) {
                             </Card>
                         </Col>
                         <Col>
-                            <Card style={{ width: '18rem' }}>
+                            <Card>
                                 <Card.Body>
                                     <Card.Title className="text-center">Schedule</Card.Title>
                                     <Card.Text>
@@ -31,7 +31,7 @@ export default function Home({user}) {
                             </Card>
                         </Col>
                         <Col>
-                            <Card style={{ width: '18rem' }}>
+                            <Card>
                                 <Card.Body>
                                     <Card.Title className="text-center">Rankings</Card.Title>
                                     <Card.Text>

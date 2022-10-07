@@ -3,6 +3,7 @@ import {Col, Container, Row, Table} from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 import { listUsers } from "./graphql/queries";
+import {Link} from "react-router-dom";
 
 export default function Rankings() {
     const [users, setUsers] = useState([]);
@@ -13,15 +14,14 @@ export default function Rankings() {
 
     async function fetchUsers() {
         const apiData = await API.graphql({ query: listUsers });
-        const usersFromAPI = apiData.data.listUsers.items;
-        setUsers(usersFromAPI);
+        setUsers(apiData.data.listUsers.items);
     }
 
     return (
         <Container fluid>
             <Row>
                 <Col />
-                <Col xs={8}>
+                <Col xs={12} lg={8}>
                     <h1 className="text-center p-5">
                         Rankings
                     </h1>
@@ -38,7 +38,7 @@ export default function Rankings() {
                         {[...users].sort(comparator).map((user, index) => (
                             <tr key={user.id}>
                                 <td>{index+1}</td>
-                                <td>{user.first} {user.last}</td>
+                                <td><Link to="/user" state={{user: user.id}}>{user.first} {user.last}</Link></td>
                                 <td>{user.wins}-{user.losses}</td>
                                 <td>{winRate(user.wins,user.losses)}</td>
                             </tr>

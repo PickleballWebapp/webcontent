@@ -1,61 +1,54 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 import {Col, Row, Table} from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import {API} from "aws-amplify";
+import {getUser} from "./graphql/queries";
 
 export default function User() {
-    let user = useQuery().get("user")
+    const location = useLocation();
+    const { user } = location.state || {user: null};
+    const [userData, setUserData] = useState();
 
-    if(user) {
-        return printDifferentUser(user)
-    } else return printCurrentUser();
-}
+    useEffect(() => {
+        fetchUserData();
+    });
 
-function printCurrentUser() {
+    async function fetchUserData() {
+        const apiData = await API.graphql({ query: getUser, variables: {id: user}});
+        setUserData(apiData.data.getUser);
+    }
+
     return(
         <Row>
             <Col sm={2} />
             <Col sm={8}>
-                <h1>Your User Profile</h1>
-                <Row>
-                    <Col sm={2}>
-                        <h6>First name:</h6>
-                    </Col>
-                    <Col>
-                        <p>first name</p>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm={2}>
-                        <h6>Last name:</h6>
-                    </Col>
-                    <Col>
-                        <p>last name</p>
-                    </Col>
-                </Row>
+                <h1>{user?.name || "Your"} User Profile</h1>
                 <Row>
                     <Col sm={2}>
                         <h6>Email:</h6>
                     </Col>
                     <Col>
-                        <p>abc@123.com</p>
+                        <p>{userData?.email}</p>
                     </Col>
                 </Row>
                 <Row>
                     <Col sm={2}>
-                        <h6>Last login:</h6>
+                        <h6>Wins:</h6>
                     </Col>
                     <Col>
-                        <p>Today</p>
+                        <p>{userData?.wins}</p>
                     </Col>
                 </Row>
                 <Row>
+                    <Col sm={2}>
+                        <h6>Losses:</h6>
+                    </Col>
                     <Col>
-                        <Button variant="outline-danger">Delete account</Button>
+                        <p>{userData?.losses}</p>
                     </Col>
                 </Row>
                 <br />
-                <h4>Your past games</h4>
+                <h4>{user?.name || "Your"} past games</h4>
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -87,67 +80,4 @@ function printCurrentUser() {
             <Col sm={2} />
         </Row>
     );
-}
-
-function printDifferentUser(user: String) {
-    return(
-        <Row>
-            <Col sm={2} />
-            <Col sm={8}>
-                <h1>{user}'s User Profile</h1>
-                <Row>
-                    <Col sm={2}>
-                        <h6>First name:</h6>
-                    </Col>
-                    <Col>
-                        <p>first name</p>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm={2}>
-                        <h6>Last name:</h6>
-                    </Col>
-                    <Col>
-                        <p>last name</p>
-                    </Col>
-                </Row>
-                <br />
-                <h4>{user}'s past games</h4>
-                <Table striped bordered hover>
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4}>{user} has no recorded games!</td>
-                    </tr>
-                    </tbody>
-                </Table>
-            </Col>
-            <Col sm={2} />
-        </Row>
-    );
-}
-
-// Collects the query parameters from the URI route
-function useQuery() {
-    const {search} = useLocation();
-    return React.useMemo(() => new URLSearchParams(search), [search]);
 }
