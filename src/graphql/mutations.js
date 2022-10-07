@@ -17,6 +17,10 @@ export const createGame = /* GraphQL */ `
       team1serves
       team1score
       team2score
+      player1name
+      player2name
+      player3name
+      player4name
       createdAt
       updatedAt
     }
@@ -38,6 +42,10 @@ export const updateGame = /* GraphQL */ `
       team1serves
       team1score
       team2score
+      player1name
+      player2name
+      player3name
+      player4name
       createdAt
       updatedAt
     }
@@ -59,6 +67,10 @@ export const deleteGame = /* GraphQL */ `
       team1serves
       team1score
       team2score
+      player1name
+      player2name
+      player3name
+      player4name
       createdAt
       updatedAt
     }
@@ -71,8 +83,7 @@ export const createUser = /* GraphQL */ `
   ) {
     createUser(input: $input, condition: $condition) {
       id
-      first
-      last
+      name
       wins
       losses
       games
@@ -90,8 +101,7 @@ export const updateUser = /* GraphQL */ `
   ) {
     updateUser(input: $input, condition: $condition) {
       id
-      first
-      last
+      name
       wins
       losses
       games
@@ -109,8 +119,7 @@ export const deleteUser = /* GraphQL */ `
   ) {
     deleteUser(input: $input, condition: $condition) {
       id
-      first
-      last
+      name
       wins
       losses
       games

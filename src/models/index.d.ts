@@ -25,6 +25,10 @@ export declare class Game {
   readonly team1serves?: boolean | null;
   readonly team1score?: number | null;
   readonly team2score?: number | null;
+  readonly player1name?: string | null;
+  readonly player2name?: string | null;
+  readonly player3name?: string | null;
+  readonly player4name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<Game, GameMetaData>);
@@ -33,8 +37,7 @@ export declare class Game {
 
 export declare class User {
   readonly id: string;
-  readonly first: string;
-  readonly last: string;
+  readonly name: string;
   readonly wins: number;
   readonly losses: number;
   readonly games?: (string | null)[] | null;

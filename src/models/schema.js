@@ -73,6 +73,34 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "player1name": {
+                    "name": "player1name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player2name": {
+                    "name": "player2name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player3name": {
+                    "name": "player3name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player4name": {
+                    "name": "player4name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -125,15 +153,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "first": {
-                    "name": "first",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "last": {
-                    "name": "last",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -231,5 +252,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "252333fbd5dbb2a4184b15268c206c61"
+    "version": "ed571160c18e4a4417ed4a33dee93ca7"
 };
