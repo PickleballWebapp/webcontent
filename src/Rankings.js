@@ -38,7 +38,7 @@ export default function Rankings() {
                         {[...users].sort(comparator).map((user, index) => (
                             <tr key={user.id}>
                                 <td>{index+1}</td>
-                                <td><Link to="/user" state={{user: user.id}}>{user.first} {user.last}</Link></td>
+                                <td><Link to="/user" state={{user: user.id}}>{user.name}</Link></td>
                                 <td>{user.wins}-{user.losses}</td>
                                 <td>{winRate(user.wins,user.losses)}</td>
                             </tr>

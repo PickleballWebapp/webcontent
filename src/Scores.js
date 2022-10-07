@@ -1,6 +1,6 @@
 import {Col, Container, Row, Table} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {API, Auth} from "aws-amplify";
+import {API} from "aws-amplify";
 import {listGames} from "./graphql/queries";
 import {Link} from "react-router-dom";
 

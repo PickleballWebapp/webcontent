@@ -19,6 +19,9 @@ export const createGame = /* GraphQL */ `
       team2score
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -40,6 +43,9 @@ export const updateGame = /* GraphQL */ `
       team2score
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -61,6 +67,9 @@ export const deleteGame = /* GraphQL */ `
       team2score
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -71,8 +80,7 @@ export const createUser = /* GraphQL */ `
   ) {
     createUser(input: $input, condition: $condition) {
       id
-      first
-      last
+      name
       wins
       losses
       games
@@ -80,6 +88,9 @@ export const createUser = /* GraphQL */ `
       type
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -90,8 +101,7 @@ export const updateUser = /* GraphQL */ `
   ) {
     updateUser(input: $input, condition: $condition) {
       id
-      first
-      last
+      name
       wins
       losses
       games
@@ -99,6 +109,9 @@ export const updateUser = /* GraphQL */ `
       type
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -109,8 +122,7 @@ export const deleteUser = /* GraphQL */ `
   ) {
     deleteUser(input: $input, condition: $condition) {
       id
-      first
-      last
+      name
       wins
       losses
       games
@@ -118,6 +130,9 @@ export const deleteUser = /* GraphQL */ `
       type
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

@@ -125,15 +125,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "first": {
-                    "name": "first",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "last": {
-                    "name": "last",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -231,5 +224,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "252333fbd5dbb2a4184b15268c206c61"
+    "version": "4a52b9d946f9be52bee73313b0120764"
 };

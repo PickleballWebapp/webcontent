@@ -33,8 +33,7 @@ export declare class Game {
 
 export declare class User {
   readonly id: string;
-  readonly first: string;
-  readonly last: string;
+  readonly name: string;
   readonly wins: number;
   readonly losses: number;
   readonly games?: (string | null)[] | null;

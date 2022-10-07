@@ -19,8 +19,7 @@ type Game @model @auth(rules: [{allow: public}]) {
 
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  first: String!
-  last: String!
+  name: String!
   wins: Int!
   losses: Int!
   games: [ID]

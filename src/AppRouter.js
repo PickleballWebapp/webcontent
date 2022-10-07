@@ -3,7 +3,6 @@ import Home from "./Home";
 import Scheduling from "./Scheduling";
 import Scores from "./Scores";
 import Rankings from "./Rankings";
-import Login from "./Login";
 import User from "./User";
 import GameScore from "./GameScore";
 
@@ -28,9 +27,6 @@ export default function AppRouter({user}) {
                 }/>
                 <Route path="/rankings" element={
                     <Rankings />
-                }/>
-                <Route path="/login" element={
-                    <Login />
                 }/>
                 <Route path="/user" element={
                     <User />

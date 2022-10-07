@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from "react-router-dom";
 import {Col, Row, Table} from "react-bootstrap";
-import {API} from "aws-amplify";
+import {API, Auth} from "aws-amplify";
 import {getUser} from "./graphql/queries";
 
 export default function User() {
     const location = useLocation();
-    const { user } = location.state || {user: null};
+    let {user} = location.state || {user: null};
     const [userData, setUserData] = useState();
 
     useEffect(() => {
@@ -14,15 +14,19 @@ export default function User() {
     });
 
     async function fetchUserData() {
-        const apiData = await API.graphql({ query: getUser, variables: {id: user}});
+        if(!user) {
+            let userData = await Auth.currentAuthenticatedUser();
+            user = userData.username;
+        }
+        const apiData = await API.graphql({query: getUser, variables: {id: user}});
         setUserData(apiData.data.getUser);
     }
 
-    return(
+    return (
         <Row>
-            <Col sm={2} />
+            <Col sm={2}/>
             <Col sm={8}>
-                <h1>{user?.name || "Your"} User Profile</h1>
+                <h1>{userData?.name}'s User Profile</h1>
                 <Row>
                     <Col sm={2}>
                         <h6>Email:</h6>
@@ -47,8 +51,8 @@ export default function User() {
                         <p>{userData?.losses}</p>
                     </Col>
                 </Row>
-                <br />
-                <h4>{user?.name || "Your"} past games</h4>
+                <br/>
+                <h4>Past games</h4>
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -77,7 +81,7 @@ export default function User() {
                     </tbody>
                 </Table>
             </Col>
-            <Col sm={2} />
+            <Col sm={2}/>
         </Row>
     );
 }
