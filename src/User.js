@@ -13,20 +13,21 @@ export default function User() {
 
     useEffect(() => {
         fetchUserData();
+        //eslint-disable-next-line
     }, []);
 
+    /**
+     * Fetch user data for either the player ID (passed via state) or for
+     * the current authenticated user (if state is empty).
+     */
     async function fetchUserData() {
-        if(!user) {
-            let userData = await Auth.currentAuthenticatedUser();
-            user = userData.username;
-        }
+        user = user || (await Auth.currentAuthenticatedUser()).username
         const userData = await API.graphql({query: getUser, variables: {id: user}});
         setUserData(userData.data.getUser);
 
         let gameDataList = [];
-        for (const game of userData.data.getUser.games) {
-            const gameData = await API.graphql({query: getGame, variables: {id: game}});
-            gameDataList.push(gameData.data.getGame);
+        for (const game of (userData.data.getUser.games || [])) {
+            gameDataList.push((await API.graphql({query: getGame, variables: {id: game}}))?.data?.getGame);
         }
         setGames(gameDataList);
     }
@@ -35,7 +36,7 @@ export default function User() {
         <Row>
             <Col sm={2}/>
             <Col sm={8}>
-                <h1>{userData?.name}'s User Profile</h1>
+                <h1>{userData?.name}'s Player Profile</h1>
                 <Row>
                     <Col sm={2}>
                         <h6>Email:</h6>

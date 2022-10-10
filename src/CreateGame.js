@@ -4,23 +4,39 @@ import {useEffect, useState} from "react";
 import {API} from "aws-amplify";
 import $ from 'jquery';
 import {createGame, updateUser} from "./graphql/mutations";
+import {checkPermissions} from "./Utils";
 
 export default function CreateGame() {
-
-    //todo authentication - redirect away for PLAYER types
-
     const [showAlert, setAlert] = useState(false);
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
+        checkUser()
         fetchUsers();
+        //eslint-disable-next-line
     }, []);
 
-    async function fetchUsers() {
-        const apiData = await API.graphql({ query: listUsers });
-        setUsers(apiData.data.listUsers.items);
+    /**
+     * Validate that user is a scorer or admin. Otherwise, redirect to scores page.
+     */
+    async function checkUser() {
+        checkPermissions().then(hasPermissions => {
+            if(!hasPermissions) {
+                window.location.replace("/scores");
+            }
+        });
     }
 
+    /**
+     * Fetch user list to populate selector fields.
+     */
+    async function fetchUsers() {
+        setUsers((await API.graphql({ query: listUsers })).data?.listUsers?.items);
+    }
+
+    /**
+     * Handle submission of the "create game" form.
+     */
     async function handleSubmit() {
         let p1 = $("#player1");
         let p2 = $("#player2");
@@ -28,19 +44,22 @@ export default function CreateGame() {
         let p4 = $("#player4");
         let dateInput = $("#date").val();
 
-        // Validate submission
+        // Validate player uniqueness
         let playerArray = [p1.val(), p2.val(), p3.val(), p4.val()];
         if(new Set(playerArray).size !== playerArray.length) {
             $("#alertBox").text("All four players must be unique. Please correct.");
             setAlert(true);
             return;
         }
+
+        // Validate date format
         if(!dateInput.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/i)) {
             $("#alertBox").text("Date must be in the form YYYY-MM-DD. Please correct.");
             setAlert(true);
             return;
         }
 
+        // Compile game details
         const gameDetails = {
             complete: false,
             player1: p1.val(),
@@ -57,6 +76,7 @@ export default function CreateGame() {
             date: dateInput,
         }
 
+        // Post game to DynamoDB
         let playerList = [gameDetails.player1, gameDetails.player2, gameDetails.player3, gameDetails.player4];
         API.graphql({query: createGame, variables: {input: gameDetails}}).then(response => {
                 playerList.forEach(player => addGameToProfile(player, response.data.createGame.id));
@@ -64,13 +84,16 @@ export default function CreateGame() {
         window.location.replace("/scores");
     }
 
+    /**
+     * Add the newly-created game to each player's profile.
+     */
     async function addGameToProfile(username, gameId) {
         const userData = await API.graphql({query: getUser, variables: {id: username}});
         const userDetails = {
             id: username,
-            games: [...userData.data.getUser.games, gameId]
+            games: (userData.data.getUser.games) ? [...userData.data.getUser.games, gameId] : gameId
         }
-        API.graphql({query: updateUser, variables: {input: userDetails}}).then(response => console.log(response)).catch(err => console.log(err));
+        API.graphql({query: updateUser, variables: {input: userDetails}}).catch(err => console.log(err));
     }
 
     return (

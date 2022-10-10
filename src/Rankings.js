@@ -10,11 +10,31 @@ export default function Rankings() {
 
     useEffect(() => {
         fetchUsers();
+        //eslint-disable-next-line
     }, []);
 
+    /**
+     * Fetch all users registered in system.
+     */
     async function fetchUsers() {
         const apiData = await API.graphql({ query: listUsers });
-        setUsers(apiData.data.listUsers.items);
+        setUsers(apiData.data?.listUsers.items);
+    }
+
+    /**
+     * Determines win rate given wins and losses.
+     */
+    function winRate(wins, losses) {
+        if(wins === losses === 0) return 0;
+        if(losses === 0) return 0;
+        return (wins/(wins+losses)*100).toFixed(1);
+    }
+
+    /**
+     * Determines which of two users has a higher win rate.
+     */
+    function comparator(usera, userb) {
+        return winRate(userb.wins, userb.losses) - winRate(usera.wins, usera.losses);
     }
 
     return (
@@ -50,20 +70,4 @@ export default function Rankings() {
             </Row>
         </Container>
     );
-}
-
-/**
- * Determines win rate given wins and losses
- */
-function winRate(wins, losses) {
-    if(wins === losses === 0) return 0;
-    if(losses === 0) return 0;
-    return (wins/(wins+losses)*100).toFixed(1);
-}
-
-/**
- * Determines which of two users has a higher win rate.
- */
-function comparator(usera, userb) {
-    return winRate(userb.wins, userb.losses) - winRate(usera.wins, usera.losses);
 }

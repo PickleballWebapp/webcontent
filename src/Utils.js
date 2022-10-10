@@ -65,3 +65,13 @@ export const gameTable = (games) => {
         </Table>
     );
 }
+
+/**
+ * Returns true if user is authenticated to view protected pages (i.e.,
+ * returns false if user is not of type ADMIN or SCORER).
+ */
+export const checkPermissions = async () => {
+    const userData = await Auth.currentAuthenticatedUser();
+    const response = await API.graphql({query: getUser, variables: {id: userData?.username}});
+    return response.data.getUser.type !== UserType.PLAYER;
+}

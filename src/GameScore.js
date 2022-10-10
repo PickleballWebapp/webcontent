@@ -6,6 +6,12 @@ import {useLocation} from "react-router-dom";
 import {updateGame} from "./graphql/mutations";
 
 export default function GameScore() {
+
+    //todo - game completion
+    //todo - manually enter score
+    //todo - add link to each user
+    //todo - conditionally render game modification stuff - only show score for player types
+
     const location = useLocation();
     const { gameId } = location.state;
 
@@ -13,13 +19,20 @@ export default function GameScore() {
 
     useEffect(() => {
         fetchGame();
+        //eslint-disable-next-line
     }, []);
 
+    /**
+     * Fetch information about game ID passed via state.
+     */
     async function fetchGame() {
         const apiData = await API.graphql({ query: getGame, variables: {id: gameId}});
         setGame(apiData.data.getGame);
     }
 
+    /**
+     * Handle request to give serve to other team.
+     */
     async function giveServe(team1: boolean) {
         const updatedRecord = {
             id: game?.id,
@@ -29,6 +42,9 @@ export default function GameScore() {
         await setGame(updatedGame.data.updateGame);
     }
 
+    /**
+     * Handle request to update the score of a match.
+     */
     async function updateScore(team1: boolean, add: boolean) {
         const updatedRecord = {
             id: game?.id,
@@ -39,13 +55,14 @@ export default function GameScore() {
         await setGame(updatedGame.data.updateGame);
     }
 
+    /**
+     * Determine bootstrap styling class for team card.
+     */
     function cardColor(game, team1) {
         if(game && !game.complete && team1 === game.team1serves)
             return "bg-info"
         return "bg-light";
     }
-
-    //todo handle game completion - button to mark game complete, cannot be undone
 
     return (
         <Container fluid>

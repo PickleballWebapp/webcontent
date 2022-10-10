@@ -1,6 +1,5 @@
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 
-
 export default function NavigationBar({signOut}) {
     return (
         <Navbar bg="light" expand="md">
@@ -15,7 +14,7 @@ export default function NavigationBar({signOut}) {
                             <NavDropdown.Item href="/scores">Game Scores</NavDropdown.Item>
                             <NavDropdown.Item href="/rankings">Rankings</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="/user">My Scores</NavDropdown.Item>
+                            <NavDropdown.Item href="/user">My Profile</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav>

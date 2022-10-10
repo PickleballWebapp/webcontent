@@ -9,8 +9,12 @@ export default function Scores() {
 
     useEffect(() => {
         fetchGames();
+        //eslint-disable-next-line
     }, []);
 
+    /**
+     * Fetch list of all games, active and complete.
+     */
     async function fetchGames() {
         const apiData = await API.graphql({query: listGames});
         setGames(apiData.data.listGames.items);
