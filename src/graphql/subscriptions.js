@@ -14,11 +14,12 @@ export const onCreateGame = /* GraphQL */ `
       team1serves
       team1score
       team2score
+      player1name
+      player2name
+      player3name
+      player4name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -35,11 +36,12 @@ export const onUpdateGame = /* GraphQL */ `
       team1serves
       team1score
       team2score
+      player1name
+      player2name
+      player3name
+      player4name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -56,11 +58,12 @@ export const onDeleteGame = /* GraphQL */ `
       team1serves
       team1score
       team2score
+      player1name
+      player2name
+      player3name
+      player4name
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -76,9 +79,6 @@ export const onCreateUser = /* GraphQL */ `
       type
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -94,9 +94,6 @@ export const onUpdateUser = /* GraphQL */ `
       type
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;
@@ -112,9 +109,6 @@ export const onDeleteUser = /* GraphQL */ `
       type
       createdAt
       updatedAt
-      _version
-      _deleted
-      _lastChangedAt
     }
   }
 `;

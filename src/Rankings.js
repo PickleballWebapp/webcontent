@@ -1,8 +1,8 @@
 import {Col, Container, Row, Table} from "react-bootstrap";
 
-import React, { useState, useEffect } from "react";
-import { API } from "aws-amplify";
-import { listUsers } from "./graphql/queries";
+import React, {useState, useEffect} from "react";
+import {API} from "aws-amplify";
+import {listUsers} from "./graphql/queries";
 import {Link} from "react-router-dom";
 
 export default function Rankings() {

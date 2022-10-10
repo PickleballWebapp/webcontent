@@ -5,6 +5,7 @@ import Scores from "./Scores";
 import Rankings from "./Rankings";
 import User from "./User";
 import GameScore from "./GameScore";
+import CreateGame from "./CreateGame";
 
 export default function AppRouter({user}) {
     return(
@@ -30,6 +31,9 @@ export default function AppRouter({user}) {
                 }/>
                 <Route path="/user" element={
                     <User />
+                }/>
+                <Route path="/new" element={
+                    <CreateGame />
                 }/>
             </Routes>
         </BrowserRouter>

@@ -5,7 +5,7 @@ import App from './App';
 
 import { Amplify } from 'aws-amplify';
 import config from './aws-exports';
-import {authHooks} from "./AuthHooks";
+import {authHooks} from "./Utils";
 
 Amplify.configure(config);
 authHooks();

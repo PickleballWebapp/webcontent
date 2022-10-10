@@ -13,7 +13,7 @@ export default function GameScore() {
 
     useEffect(() => {
         fetchGame();
-    });
+    }, []);
 
     async function fetchGame() {
         const apiData = await API.graphql({ query: getGame, variables: {id: gameId}});
@@ -45,6 +45,7 @@ export default function GameScore() {
         return "bg-light";
     }
 
+    //todo handle game completion - button to mark game complete, cannot be undone
 
     return (
         <Container fluid>
@@ -57,9 +58,9 @@ export default function GameScore() {
                     <div className="d-flex justify-content-center">
                         <Card style={{ width: '18rem' }} className={game?.complete && "bg-success"} >
                             <Card.Body>
-                                <Card.Text>
+                                <Card.Header>
                                     <h1 className="text-center">{game?.team1score} - {game?.team2score}</h1>
-                                </Card.Text>
+                                </Card.Header>
                             </Card.Body>
                         </Card>
                     </div>
@@ -72,7 +73,7 @@ export default function GameScore() {
                             </Row>
                             <Row>
                                 <div className="d-flex justify-content-center">
-                                    <h5 className="text-center">{game?.player1} & {game?.player2}</h5>
+                                    <h5 className="text-center">{game?.player1name} & {game?.player2name}</h5>
                                 </div>
                             </Row>
                             <Row>
@@ -103,7 +104,7 @@ export default function GameScore() {
                             </Row>
                             <Row>
                                 <div className="d-flex justify-content-center">
-                                    <h5 className="text-center">{game?.player3} & {game?.player4}</h5>
+                                    <h5 className="text-center">{game?.player3name} & {game?.player4name}</h5>
                                 </div>
                             </Row>
                             <Row>

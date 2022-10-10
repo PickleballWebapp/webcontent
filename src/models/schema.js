@@ -73,6 +73,34 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "player1name": {
+                    "name": "player1name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player2name": {
+                    "name": "player2name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player3name": {
+                    "name": "player3name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "player4name": {
+                    "name": "player4name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -224,5 +252,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "4a52b9d946f9be52bee73313b0120764"
+    "version": "ed571160c18e4a4417ed4a33dee93ca7"
 };
