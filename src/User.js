@@ -6,6 +6,9 @@ import { getGame, getUser } from "./graphql/queries";
 import { gameTable } from "./Utils";
 
 export default function User() {
+  //todo - conditionally render user modification stuff (just user type) for admins
+  //todo - conditionally render delete user for admins
+
   const location = useLocation();
   let { user } = location.state || { user: null };
   const [userData, setUserData] = useState();

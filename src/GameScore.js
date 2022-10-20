@@ -7,9 +7,11 @@ import { updateGame } from "./graphql/mutations";
 
 export default function GameScore() {
   //todo - game completion
-  //todo - manually enter score
-  //todo - add link to each user
-  //todo - conditionally render game modification stuff - only show score for player types
+  //todo - validation - can't go negative
+  //todo - conditionally render game modification stuff (everything except score) - and only show score for player types
+  //todo - delete game functionality
+  //todo - manually enter score?
+  //todo - add link to each user?
 
   const location = useLocation();
   const { gameId } = location.state;
