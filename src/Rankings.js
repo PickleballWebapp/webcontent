@@ -8,18 +8,16 @@ import { Link } from "react-router-dom";
 export default function Rankings() {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    fetchUsers();
-    //eslint-disable-next-line
-  }, []);
-
   /**
    * Fetch all users registered in system.
    */
-  async function fetchUsers() {
-    const apiData = await API.graphql({ query: listUsers });
-    setUsers(apiData.data?.listUsers.items);
-  }
+  useEffect(() => {
+    async function fetchUsers() {
+      const apiData = await API.graphql({ query: listUsers });
+      setUsers(apiData.data?.listUsers.items);
+    }
+    fetchUsers();
+  }, []);
 
   /**
    * Determines win rate given wins and losses.
@@ -59,9 +57,7 @@ export default function Rankings() {
                 <tr key={user.id}>
                   <td>{index + 1}</td>
                   <td>
-                    <Link to="/user" state={{ user: user.id }}>
-                      {user.name}
-                    </Link>
+                    <Link to={`/user/${user?.id}`}>{user.name}</Link>
                   </td>
                   <td>
                     {user.wins}-{user.losses}

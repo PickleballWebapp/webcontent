@@ -54,17 +54,17 @@ function App({ signOut }) {
 
   return (
     <BrowserRouter>
-      <NavigationBar signOut={signOut} />
+      <NavigationBar signOut={signOut} user={currentUser} />
       <Container fluid className="pt-3">
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home user={currentUser} />} />
           <Route path="/scheduling" element={<Scheduling />} />
           <Route path="/scores" element={<Scores user={currentUser} />} />
-          <Route path="/score" element={<GameScore user={currentUser}/>} />
+          <Route path="/score/:id" element={<GameScore user={currentUser} />} />
           <Route path="/rankings" element={<Rankings />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/new" element={<CreateGame />} />
+          <Route path="/user/:id" element={<User />} />
+          <Route path="/new" element={<CreateGame user={currentUser} />} />
         </Routes>
       </Container>
     </BrowserRouter>

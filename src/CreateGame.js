@@ -12,37 +12,29 @@ import { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import $ from "jquery";
 import { createGame, updateUser } from "./graphql/mutations";
-import { checkPermissions } from "./Utils";
 import { useNavigate } from "react-router-dom";
+import { UserType } from "./models";
 
-export default function CreateGame() {
+export default function CreateGame({ user }) {
   let navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [users, setUsers] = useState([]);
 
+  /**
+   * Validate that user is a scorer or admin. Fetch user list
+   * to populate selector fields.
+   */
   useEffect(() => {
-    checkUser();
+    if (user.type === UserType.PLAYER) {
+      navigate("/scores");
+    }
+    async function fetchUsers() {
+      setUsers(
+        (await API.graphql({ query: listUsers })).data?.listUsers?.items
+      );
+    }
     fetchUsers();
-    //eslint-disable-next-line
   }, []);
-
-  /**
-   * Validate that user is a scorer or admin. Otherwise, redirect to scores page.
-   */
-  async function checkUser() {
-    checkPermissions().then((hasPermissions) => {
-      if (!hasPermissions) {
-        navigate("/scores");
-      }
-    });
-  }
-
-  /**
-   * Fetch user list to populate selector fields.
-   */
-  async function fetchUsers() {
-    setUsers((await API.graphql({ query: listUsers })).data?.listUsers?.items);
-  }
 
   /**
    * Handle submission of the "create game" form.

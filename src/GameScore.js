@@ -2,7 +2,7 @@ import { Card, Col, Container, Row, Button } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import { getGame } from "./graphql/queries";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { updateGame } from "./graphql/mutations";
 import { UserType } from "./models";
 
@@ -11,26 +11,22 @@ export default function GameScore({ user }) {
   //todo - validation - can't go negative
   //todo - manually enter score
 
-  const location = useLocation();
-  const { gameId } = location.state;
-
+  let { id } = useParams();
   const [game, setGame] = useState();
-
-  useEffect(() => {
-    fetchGame();
-    //eslint-disable-next-line
-  }, []);
 
   /**
    * Fetch information about game ID passed via state.
    */
-  async function fetchGame() {
-    const apiData = await API.graphql({
-      query: getGame,
-      variables: { id: gameId },
-    });
-    setGame(apiData.data.getGame);
-  }
+  useEffect(() => {
+    async function fetchGame() {
+      const apiData = await API.graphql({
+        query: getGame,
+        variables: { id: id },
+      });
+      setGame(apiData.data.getGame);
+    }
+    fetchGame();
+  }, [id]);
 
   /**
    * Handle request to give serve to other team.

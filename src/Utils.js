@@ -1,6 +1,3 @@
-import { API, Auth } from "aws-amplify";
-import { UserType } from "./models";
-import { getUser } from "./graphql/queries";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -24,7 +21,7 @@ export const gameTable = (games, showNewGameRow = false) => {
           <tr key={game.id}>
             <td>
               {
-                <Link to="/score" state={{ gameId: game.id }}>
+                <Link to={`/score/${game?.id}`}>
                   {game.complete ? "Complete" : "Active"}
                 </Link>
               }
@@ -51,17 +48,4 @@ export const gameTable = (games, showNewGameRow = false) => {
       </tbody>
     </Table>
   );
-};
-
-/**
- * Returns true if user is authenticated to view protected pages (i.e.,
- * returns false if user is not of type ADMIN or SCORER).
- */
-export const checkPermissions = async () => {
-  const userData = await Auth.currentAuthenticatedUser();
-  const response = await API.graphql({
-    query: getUser,
-    variables: { id: userData?.username },
-  });
-  return response.data.getUser.type !== UserType.PLAYER;
 };

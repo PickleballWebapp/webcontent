@@ -8,18 +8,16 @@ import { UserType } from "./models";
 export default function Scores({ user }) {
   const [games, setGames] = useState([]);
 
-  useEffect(() => {
-    fetchGames();
-    //eslint-disable-next-line
-  }, []);
-
   /**
-   * Fetch list of all games, active and complete.
+   * Fetch list of all games, both active and complete.
    */
-  async function fetchGames() {
-    const apiData = await API.graphql({ query: listGames });
-    setGames(apiData.data.listGames.items);
-  }
+  useEffect(() => {
+    async function fetchGames() {
+      const apiData = await API.graphql({ query: listGames });
+      setGames(apiData.data.listGames.items);
+    }
+    fetchGames();
+  }, []);
 
   return (
     <Container fluid>
@@ -27,7 +25,10 @@ export default function Scores({ user }) {
         <Col />
         <Col xs={12} lg={8}>
           <h1 className="text-center p-5">Game Scores</h1>
-          {gameTable(games, user?.type !== UserType.PLAYER)}
+          {gameTable(
+            games,
+            user?.type === UserType.ADMIN || user?.type === UserType.SCORER
+          )}
         </Col>
         <Col />
       </Row>

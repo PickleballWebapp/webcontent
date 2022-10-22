@@ -1,7 +1,7 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export default function NavigationBar({ signOut }) {
+export default function NavigationBar({ signOut, user }) {
   return (
     <Navbar bg="light" expand="md">
       <Container>
@@ -25,7 +25,7 @@ export default function NavigationBar({ signOut }) {
             </Link>
           </Nav>
           <Nav>
-            <Link className="nav-link" to="/user">
+            <Link className="nav-link" to={`/user/${user?.id}`}>
               My Profile
             </Link>
             <Nav.Link onClick={signOut}>Logout</Nav.Link>
