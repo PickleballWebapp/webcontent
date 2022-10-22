@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import { listGames } from "./graphql/queries";
 import { gameTable } from "./Utils";
+import { UserType } from "./models";
 
-export default function Scores() {
+export default function Scores({ user }) {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function Scores() {
         <Col />
         <Col xs={12} lg={8}>
           <h1 className="text-center p-5">Game Scores</h1>
-          {gameTable(games)}
+          {gameTable(games, user?.type !== UserType.PLAYER)}
         </Col>
         <Col />
       </Row>

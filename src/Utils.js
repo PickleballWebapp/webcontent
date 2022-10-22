@@ -1,43 +1,13 @@
-import { API, Auth, Hub } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import { UserType } from "./models";
-import { createUser } from "./graphql/mutations";
 import { getUser } from "./graphql/queries";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 /**
- * Creates user account in 'User' table if it doesn't exist.
- */
-export const authHooks = () => {
-  Hub.listen("auth", async (data) => {
-    // Only pay attention to signIn events
-    if (data.payload.event !== "signIn") return;
-
-    // Query username in Users table
-    const user = await Auth.currentAuthenticatedUser();
-    const userData = await API.graphql({
-      query: getUser,
-      variables: { id: user.username },
-    });
-
-    // If user doesn't already exist in table, create it
-    if (userData?.data.getUser) return;
-    const userDetails = {
-      id: user.username,
-      name: user.attributes.name,
-      email: user.attributes.email,
-      wins: 0,
-      losses: 0,
-      type: UserType.PLAYER,
-    };
-    API.graphql({ query: createUser, variables: { input: userDetails } });
-  });
-};
-
-/**
  * Builds graphical display of game information given a list of game data.
  */
-export const gameTable = (games) => {
+export const gameTable = (games, showNewGameRow = false) => {
   return (
     <Table striped bordered hover>
       <thead>
@@ -71,6 +41,13 @@ export const gameTable = (games) => {
             </td>
           </tr>
         ))}
+        {showNewGameRow && (
+          <tr key="newGame">
+            <td colSpan={5} className="text-center">
+              <Link to="/new">Start New Game</Link>
+            </td>
+          </tr>
+        )}
       </tbody>
     </Table>
   );

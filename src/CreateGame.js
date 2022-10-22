@@ -13,8 +13,10 @@ import { API } from "aws-amplify";
 import $ from "jquery";
 import { createGame, updateUser } from "./graphql/mutations";
 import { checkPermissions } from "./Utils";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateGame() {
+  let navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -30,7 +32,7 @@ export default function CreateGame() {
   async function checkUser() {
     checkPermissions().then((hasPermissions) => {
       if (!hasPermissions) {
-        window.location.replace("/scores");
+        navigate("/scores");
       }
     });
   }
@@ -100,7 +102,8 @@ export default function CreateGame() {
         );
       })
       .catch((err) => console.log(err));
-    window.location.replace("/scores");
+
+    navigate("/scores");
   }
 
   /**
@@ -117,6 +120,7 @@ export default function CreateGame() {
         ? [...userData.data.getUser.games, gameId]
         : gameId,
     };
+    console.log(`adding game ${gameId} to ${username}`);
     API.graphql({ query: updateUser, variables: { input: userDetails } }).catch(
       (err) => console.log(err)
     );

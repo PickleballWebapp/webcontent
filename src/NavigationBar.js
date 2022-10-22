@@ -1,9 +1,7 @@
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function NavigationBar({ signOut }) {
-  //todo - conditionally render game start page
-
   return (
     <Navbar bg="light" expand="md">
       <Container>
@@ -19,20 +17,17 @@ export default function NavigationBar({ signOut }) {
             <Link className="nav-link" to="/scheduling">
               Scheduling
             </Link>
-            <NavDropdown title="Scores" id="basic-nav-dropdown">
-              <Link className="dropdown-item" to="/scores">
-                Game Scores
-              </Link>
-              <Link className="dropdown-item" to="/rankings">
-                Rankings
-              </Link>
-              <NavDropdown.Divider />
-              <Link className="dropdown-item" to="/user">
-                My Profile
-              </Link>
-            </NavDropdown>
+            <Link className="nav-link" to="/scores">
+              Game Scores
+            </Link>
+            <Link className="nav-link" to="/rankings">
+              Rankings
+            </Link>
           </Nav>
           <Nav>
+            <Link className="nav-link" to="/user">
+              My Profile
+            </Link>
             <Nav.Link onClick={signOut}>Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>

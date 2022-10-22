@@ -4,14 +4,12 @@ import { API } from "aws-amplify";
 import { getGame } from "./graphql/queries";
 import { useLocation } from "react-router-dom";
 import { updateGame } from "./graphql/mutations";
+import { UserType } from "./models";
 
-export default function GameScore() {
+export default function GameScore({ user }) {
   //todo - game completion
   //todo - validation - can't go negative
-  //todo - conditionally render game modification stuff (everything except score) - and only show score for player types
-  //todo - delete game functionality
-  //todo - manually enter score?
-  //todo - add link to each user?
+  //todo - manually enter score
 
   const location = useLocation();
   const { gameId } = location.state;
@@ -110,34 +108,37 @@ export default function GameScore() {
                   </h5>
                 </div>
               </Row>
-              <Row>
-                <div className="flex-sm-column justify-content-center">
-                  <Button
-                    variant="success"
-                    size="lg"
-                    className="m-1"
-                    onClick={() => updateScore(true, true)}
-                  >
-                    +1
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    className="m-1"
-                    onClick={() => giveServe(true)}
-                  >
-                    Give Serve
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="lg"
-                    className="m-1"
-                    onClick={() => updateScore(true, false)}
-                  >
-                    -1
-                  </Button>
-                </div>
-              </Row>
+              {(user.type === UserType.ADMIN ||
+                user.type === UserType.SCORER) && (
+                <Row>
+                  <div className="flex-sm-column justify-content-center">
+                    <Button
+                      variant="success"
+                      size="lg"
+                      className="m-1"
+                      onClick={() => updateScore(true, true)}
+                    >
+                      +1
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className="m-1"
+                      onClick={() => giveServe(true)}
+                    >
+                      Give Serve
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="lg"
+                      className="m-1"
+                      onClick={() => updateScore(true, false)}
+                    >
+                      -1
+                    </Button>
+                  </div>
+                </Row>
+              )}
             </Col>
             <Col
               className={`card align-items-center p-4 m-2 ${cardColor(
@@ -155,34 +156,37 @@ export default function GameScore() {
                   </h5>
                 </div>
               </Row>
-              <Row>
-                <div className="flex-sm-column justify-content-center">
-                  <Button
-                    variant="success"
-                    size="lg"
-                    className="m-1"
-                    onClick={() => updateScore(false, true)}
-                  >
-                    +1
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    className="m-1"
-                    onClick={() => giveServe(false)}
-                  >
-                    Give Serve
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="lg"
-                    className="m-1"
-                    onClick={() => updateScore(false, false)}
-                  >
-                    -1
-                  </Button>
-                </div>
-              </Row>
+              {(user.type === UserType.ADMIN ||
+                user.type === UserType.SCORER) && (
+                <Row>
+                  <div className="flex-sm-column justify-content-center">
+                    <Button
+                      variant="success"
+                      size="lg"
+                      className="m-1"
+                      onClick={() => updateScore(false, true)}
+                    >
+                      +1
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className="m-1"
+                      onClick={() => giveServe(false)}
+                    >
+                      Give Serve
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="lg"
+                      className="m-1"
+                      onClick={() => updateScore(false, false)}
+                    >
+                      -1
+                    </Button>
+                  </div>
+                </Row>
+              )}
             </Col>
           </Row>
         </Col>
