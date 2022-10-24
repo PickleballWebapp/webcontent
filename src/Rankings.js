@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 import { listUsers } from "./graphql/queries";
 import { Link } from "react-router-dom";
+import { comparator, winRate } from "./Utils";
 
 export default function Rankings() {
   const [users, setUsers] = useState([]);
@@ -19,24 +20,6 @@ export default function Rankings() {
     fetchUsers();
   }, []);
 
-  /**
-   * Determines win rate given wins and losses.
-   */
-  function winRate(wins, losses) {
-    if ((wins === losses) === 0) return 0;
-    if (losses === 0) return 0;
-    return ((wins / (wins + losses)) * 100).toFixed(1);
-  }
-
-  /**
-   * Determines which of two users has a higher win rate.
-   */
-  function comparator(usera, userb) {
-    return (
-      winRate(userb.wins, userb.losses) - winRate(usera.wins, usera.losses)
-    );
-  }
-
   return (
     <Container fluid>
       <Row>
@@ -49,7 +32,7 @@ export default function Rankings() {
                 <th>Rank</th>
                 <th>Name</th>
                 <th>Record (W-L)</th>
-                <th>Win Rate (%)</th>
+                <th>Win Rate</th>
               </tr>
             </thead>
             <tbody>
@@ -62,7 +45,7 @@ export default function Rankings() {
                   <td>
                     {user.wins}-{user.losses}
                   </td>
-                  <td>{winRate(user.wins, user.losses)}</td>
+                  <td>{winRate(user.wins, user.losses)}%</td>
                 </tr>
               ))}
             </tbody>

@@ -22,6 +22,9 @@ function App({ signOut }) {
   const getUserJson = () => JSON.parse(localStorage.getItem("user"));
   const [currentUser, setCurrentUser] = useState(getUserJson());
 
+  /**
+   * Get user data from DynamoDB and store in application state.
+   */
   useEffect(() => {
     async function dynamodbUserSearch() {
       const user = await Auth.currentAuthenticatedUser();
@@ -43,11 +46,14 @@ function App({ signOut }) {
           variables: { input: userDetails },
         });
       }
-      setCurrentUser(userData.data.getUser);
+      setCurrentUser(userData.data.getUser || userData.data.createUser);
     }
     dynamodbUserSearch();
   }, []);
 
+  /**
+   *
+   */
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
@@ -63,7 +69,7 @@ function App({ signOut }) {
           <Route path="/scores" element={<Scores user={currentUser} />} />
           <Route path="/score/:id" element={<GameScore user={currentUser} />} />
           <Route path="/rankings" element={<Rankings />} />
-          <Route path="/user/:id" element={<User />} />
+          <Route path="/user/:id" element={<User user={currentUser} />} />
           <Route path="/new" element={<CreateGame user={currentUser} />} />
         </Routes>
       </Container>

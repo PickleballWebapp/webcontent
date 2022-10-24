@@ -34,7 +34,7 @@ export default function CreateGame({ user }) {
       );
     }
     fetchUsers();
-  }, []);
+  }, [navigate, user]);
 
   /**
    * Handle submission of the "create game" form.
@@ -94,7 +94,6 @@ export default function CreateGame({ user }) {
         );
       })
       .catch((err) => console.log(err));
-
     navigate("/scores");
   }
 

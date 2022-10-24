@@ -1,10 +1,11 @@
 import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 /**
  * Builds graphical display of game information given a list of game data.
  */
-export const gameTable = (games, showNewGameRow = false) => {
+export const GameTable = (games, showNewGameRow = false) => {
+  let navigate = useNavigate();
   return (
     <Table striped bordered hover>
       <thead>
@@ -18,13 +19,13 @@ export const gameTable = (games, showNewGameRow = false) => {
       </thead>
       <tbody>
         {games.map((game) => (
-          <tr key={game.id}>
+          <tr
+            key={game.id}
+            onClick={() => navigate(`/score/${game?.id}`)}
+            style={{ cursor: "pointer" }}
+          >
             <td>
-              {
-                <Link to={`/score/${game?.id}`}>
-                  {game.complete ? "Complete" : "Active"}
-                </Link>
-              }
+              <strong>{game.complete ? "Complete" : "Active"}</strong>
             </td>
             <td>{game.date}</td>
             <td>
@@ -48,4 +49,19 @@ export const gameTable = (games, showNewGameRow = false) => {
       </tbody>
     </Table>
   );
+};
+
+/**
+ * Determines win rate given wins and losses.
+ */
+export const winRate = (wins, losses) => {
+  if (wins === undefined || wins === 0) return (0).toFixed(1);
+  return ((wins / (wins + losses)) * 100).toFixed(1);
+};
+
+/**
+ * Determines which of two users has a higher win rate.
+ */
+export const comparator = (usera, userb) => {
+  return winRate(userb.wins, userb.losses) - winRate(usera.wins, usera.losses);
 };
