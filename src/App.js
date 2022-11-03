@@ -17,10 +17,12 @@ import { API, Auth } from "aws-amplify";
 import { getUser } from "./graphql/queries";
 import { UserType } from "./models";
 import { createUser } from "./graphql/mutations";
+import ScheduleGames from "./ScheduleGames";
 
 function App({ signOut }) {
   const getUserJson = () => JSON.parse(localStorage.getItem("user"));
   const [currentUser, setCurrentUser] = useState(getUserJson());
+  const [activePage, setActivePage] = useState(null);
 
   /**
    * Get user data from DynamoDB and store in application state.
@@ -48,11 +50,12 @@ function App({ signOut }) {
       }
       setCurrentUser(userData.data.getUser || userData.data.createUser);
     }
-    dynamodbUserSearch();
+    dynamodbUserSearch().then((response) => console.log(response));
   }, []);
 
   /**
-   *
+   * Whenever the user data is updated in app state, update it in
+   * the browser's local storage as well.
    */
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
@@ -60,7 +63,12 @@ function App({ signOut }) {
 
   return (
     <BrowserRouter>
-      <NavigationBar signOut={signOut} user={currentUser} />
+      <NavigationBar
+        activeKey={activePage}
+        onSelect={setActivePage}
+        signOut={signOut}
+        user={currentUser}
+      />
       <Container fluid className="pt-3">
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
@@ -71,6 +79,7 @@ function App({ signOut }) {
           <Route path="/rankings" element={<Rankings />} />
           <Route path="/user/:id" element={<User user={currentUser} />} />
           <Route path="/new" element={<CreateGame user={currentUser} />} />
+          <Route path="/schedule" element={<ScheduleGames user={currentUser} />} />
         </Routes>
       </Container>
     </BrowserRouter>

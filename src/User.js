@@ -43,7 +43,7 @@ export default function User({ user }) {
       }
       setGames(gameDataList);
     }
-    fetchUserData();
+    fetchUserData().then((response) => console.log(response));
   }, [id]);
 
   /**

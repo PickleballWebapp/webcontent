@@ -14,11 +14,13 @@ import $ from "jquery";
 import { createGame, updateUser } from "./graphql/mutations";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "./models";
+import { DatePicker } from "rsuite";
 
 export default function CreateGame({ user }) {
   let navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [users, setUsers] = useState([]);
+  const [date, setDate] = useState();
 
   /**
    * Validate that user is a scorer or admin. Fetch user list
@@ -33,7 +35,7 @@ export default function CreateGame({ user }) {
         (await API.graphql({ query: listUsers })).data?.listUsers?.items
       );
     }
-    fetchUsers();
+    fetchUsers().then((response) => console.log(response));
   }, [navigate, user]);
 
   /**
@@ -44,7 +46,7 @@ export default function CreateGame({ user }) {
     let p2 = $("#player2");
     let p3 = $("#player3");
     let p4 = $("#player4");
-    let dateInput = $("#date").val();
+    let dateInput = date;
 
     // Validate player uniqueness
     let playerArray = [p1.val(), p2.val(), p3.val(), p4.val()];
@@ -87,14 +89,14 @@ export default function CreateGame({ user }) {
       gameDetails.player3,
       gameDetails.player4,
     ];
-    API.graphql({ query: createGame, variables: { input: gameDetails } })
-      .then((response) => {
-        playerList.forEach((player) =>
-          addGameToProfile(player, response.data.createGame.id)
-        );
+    await API.graphql({ query: createGame, variables: { input: gameDetails } })
+      .then(async (response) => {
+        for (const player of playerList) {
+          await addGameToProfile(player, response.data.createGame.id);
+          navigate(`/score/${response.data.createGame.id}`);
+        }
       })
       .catch((err) => console.log(err));
-    navigate("/scores");
   }
 
   /**
@@ -186,10 +188,11 @@ export default function CreateGame({ user }) {
               <Col className="card mt-4">
                 <Form.Group className="mt-3 mb-3 me-3">
                   <Form.Label>Game Date</Form.Label>
-                  <Form.Control placeholder="YYYY-MM-DD" id="date" />
-                  <Form.Text className="text-muted">
-                    Must be in the form 'YYYY-MM-DD'
-                  </Form.Text>
+                  <DatePicker
+                    className="ms-3"
+                    oneTap
+                    onChange={(d) => setDate(d?.toISOString().split("T")[0])}
+                  />
                 </Form.Group>
                 <Button onClick={handleSubmit} className="mb-2">
                   Submit

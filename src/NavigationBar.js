@@ -1,37 +1,53 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import React from "react";
+import { Nav, Navbar } from "rsuite";
 import { Link } from "react-router-dom";
+import MemberIcon from "@rsuite/icons/Member";
+import { UserType } from "./models";
 
-export default function NavigationBar({ signOut, user }) {
+const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+  <Link ref={ref} to={href} {...rest}>
+    {children}
+  </Link>
+));
+
+export default function NavigationBar({ signOut, user, onSelect, activeKey }) {
   return (
-    <Navbar bg="light" expand="md">
-      <Container>
-        <Link className="navbar-brand" to="/home">
-          Vandy Pickleball
-        </Link>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Link className="nav-link" to="/home">
-              Home
-            </Link>
-            <Link className="nav-link" to="/scheduling">
-              Scheduling
-            </Link>
-            <Link className="nav-link" to="/scores">
-              Game Scores
-            </Link>
-            <Link className="nav-link" to="/rankings">
-              Rankings
-            </Link>
-          </Nav>
-          <Nav>
-            <Link className="nav-link" to={`/user/${user?.id}`}>
-              My Profile
-            </Link>
-            <Nav.Link onClick={signOut}>Logout</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
+    <Navbar appearance="subtle">
+      <Navbar.Brand as={NavLink} href="/home" style={{ fontWeight: "bolder" }}>
+        Vandy Pickleball
+      </Navbar.Brand>
+      <Nav onSelect={onSelect} activeKey={activeKey}>
+        <Nav.Item as={NavLink} href="/scheduling" eventKey="2">
+          Schedule
+        </Nav.Item>
+        <Nav.Item as={NavLink} href="/scores" eventKey="3">
+          Game Scores
+        </Nav.Item>
+        <Nav.Item as={NavLink} href="/rankings" eventKey="4">
+          Rankings
+        </Nav.Item>
+        {user?.type === UserType.ADMIN && (
+          <Nav.Menu title="Admin">
+            <Nav.Item as={NavLink} href="/new" eventKey="5">
+              New Game
+            </Nav.Item>
+            <Nav.Item as={NavLink} href="/schedule" eventKey="6">
+              Schedule Round Robin
+            </Nav.Item>
+          </Nav.Menu>
+        )}
+      </Nav>
+      <Nav pullRight onSelect={onSelect} activeKey={activeKey}>
+        <Nav.Item
+          as={NavLink}
+          href={`/user/${user?.id}`}
+          icon={<MemberIcon />}
+          eventKey="7"
+        >
+          My Profile
+        </Nav.Item>
+        <Nav.Item onClick={signOut}>Logout</Nav.Item>
+      </Nav>
     </Navbar>
   );
 }

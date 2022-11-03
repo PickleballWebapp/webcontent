@@ -15,6 +15,7 @@ export default function GameScore({ user }) {
 
   /**
    * Fetch information about game ID passed via state.
+   * @namespace apiData.data.getGame - API response.
    */
   useEffect(() => {
     async function fetchGame() {
@@ -24,26 +25,28 @@ export default function GameScore({ user }) {
       });
       setGame(apiData.data.getGame);
     }
-    fetchGame();
+    fetchGame().then((response) => console.log(response));
   }, [id]);
 
   /**
    * Handle request to give serve to other team.
+   * @namespace apiData.data.updateGame - API response.
    */
   async function giveServe(team1: boolean) {
     const updatedRecord = {
       id: id,
       team1serves: team1,
     };
-    const updatedGame = await API.graphql({
+    const apiData = await API.graphql({
       query: updateGame,
       variables: { input: updatedRecord },
     });
-    await setGame(updatedGame.data.updateGame);
+    await setGame(apiData.data.updateGame);
   }
 
   /**
    * Handle request to update the score of a match.
+   * @namespace apiData.data.updateGame - API response.
    */
   async function updateScore(team1: boolean, add: boolean) {
     const updatedRecord = {
@@ -55,15 +58,16 @@ export default function GameScore({ user }) {
         game?.team2score +
         (team1 ? 0 : add ? 1 : game?.team2score === 0 ? 0 : -1),
     };
-    const updatedGame = await API.graphql({
+    const apiData = await API.graphql({
       query: updateGame,
       variables: { input: updatedRecord },
     });
-    await setGame(updatedGame.data.updateGame);
+    await setGame(apiData.data.updateGame);
   }
 
   /**
    * Handle request to mark game as complete.
+   * @namespace apiData.data.updateGame - API response.
    */
   async function handleCompleteGame() {
     const updatedRecord = {
@@ -71,11 +75,11 @@ export default function GameScore({ user }) {
       complete: true,
     };
 
-    const updatedGame = await API.graphql({
+    const apiData = await API.graphql({
       query: updateGame,
       variables: { input: updatedRecord },
     });
-    await setGame(updatedGame.data.updateGame);
+    await setGame(apiData.data.updateGame);
     setCompleteModal(false);
 
     await setWinsLosses(game.player1, game.team1score > game.team2score);
@@ -136,11 +140,9 @@ export default function GameScore({ user }) {
               className={game?.complete && "bg-success"}
             >
               <Card.Body>
-                <Card.Header>
-                  <h1 className="text-center">
-                    {game?.team1score} - {game?.team2score}
-                  </h1>
-                </Card.Header>
+                <h1 className="text-center">
+                  {game?.team1score} - {game?.team2score}
+                </h1>
               </Card.Body>
             </Card>
           </div>

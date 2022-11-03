@@ -1,12 +1,12 @@
 import { Col, Container, Row, Table } from "react-bootstrap";
-
 import React, { useState, useEffect } from "react";
 import { API } from "aws-amplify";
 import { listUsers } from "./graphql/queries";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { comparator, winRate } from "./Utils";
 
 export default function Rankings() {
+  let navigate = useNavigate();
   const [users, setUsers] = useState([]);
 
   /**
@@ -17,7 +17,7 @@ export default function Rankings() {
       const apiData = await API.graphql({ query: listUsers });
       setUsers(apiData.data?.listUsers.items);
     }
-    fetchUsers();
+    fetchUsers().then((response) => console.log(response));
   }, []);
 
   return (
@@ -37,11 +37,13 @@ export default function Rankings() {
             </thead>
             <tbody>
               {[...users].sort(comparator).map((user, index) => (
-                <tr key={user.id}>
+                <tr
+                  key={user.id}
+                  onClick={() => navigate(`/user/${user?.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
                   <td>{index + 1}</td>
-                  <td>
-                    <Link to={`/user/${user?.id}`}>{user.name}</Link>
-                  </td>
+                  <td>{user.name}</td>
                   <td>
                     {user.wins}-{user.losses}
                   </td>
