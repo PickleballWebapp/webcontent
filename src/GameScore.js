@@ -25,7 +25,7 @@ export default function GameScore({ user }) {
       });
       setGame(apiData.data.getGame);
     }
-    fetchGame().then((response) => console.log(response));
+    fetchGame();
   }, [id]);
 
   /**

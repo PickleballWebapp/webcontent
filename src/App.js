@@ -1,23 +1,13 @@
 import NavigationBar from "./NavigationBar";
 import "bootstrap/dist/css/bootstrap.css";
 import { Container } from "react-bootstrap";
-
-import "@aws-amplify/ui-react/styles.css";
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Home from "./Home";
-import Scheduling from "./Scheduling";
-import Scores from "./Scores";
-import GameScore from "./GameScore";
-import Rankings from "./Rankings";
-import User from "./User";
-import CreateGame from "./CreateGame";
 import { useEffect, useState } from "react";
 import { API, Auth } from "aws-amplify";
 import { getUser } from "./graphql/queries";
 import { UserType } from "./models";
 import { createUser } from "./graphql/mutations";
-import ScheduleGames from "./ScheduleGames";
+import PathRoutes from "./Routes";
 
 function App({ signOut }) {
   const getUserJson = () => JSON.parse(localStorage.getItem("user"));
@@ -62,7 +52,7 @@ function App({ signOut }) {
   }, [currentUser]);
 
   return (
-    <BrowserRouter>
+    <div>
       <NavigationBar
         activeKey={activePage}
         onSelect={setActivePage}
@@ -70,19 +60,9 @@ function App({ signOut }) {
         user={currentUser}
       />
       <Container fluid className="pt-3">
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<Home user={currentUser} />} />
-          <Route path="/scheduling" element={<Scheduling />} />
-          <Route path="/scores" element={<Scores user={currentUser} />} />
-          <Route path="/score/:id" element={<GameScore user={currentUser} />} />
-          <Route path="/rankings" element={<Rankings />} />
-          <Route path="/user/:id" element={<User user={currentUser} />} />
-          <Route path="/new" element={<CreateGame user={currentUser} />} />
-          <Route path="/schedule" element={<ScheduleGames user={currentUser} />} />
-        </Routes>
+        <PathRoutes currentUser={currentUser} />
       </Container>
-    </BrowserRouter>
+    </div>
   );
 }
 

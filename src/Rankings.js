@@ -17,7 +17,7 @@ export default function Rankings() {
       const apiData = await API.graphql({ query: listUsers });
       setUsers(apiData.data?.listUsers.items);
     }
-    fetchUsers().then((response) => console.log(response));
+    fetchUsers();
   }, []);
 
   return (

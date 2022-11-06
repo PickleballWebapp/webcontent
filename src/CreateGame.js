@@ -7,14 +7,15 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-import { getUser, listUsers } from "./graphql/queries";
+import { listUsers } from "./graphql/queries";
 import { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import $ from "jquery";
-import { createGame, updateUser } from "./graphql/mutations";
+import { createGame } from "./graphql/mutations";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "./models";
 import { DatePicker } from "rsuite";
+import {addGameToProfile} from "./Utils";
 
 export default function CreateGame({ user }) {
   let navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function CreateGame({ user }) {
         (await API.graphql({ query: listUsers })).data?.listUsers?.items
       );
     }
-    fetchUsers().then((response) => console.log(response));
+    fetchUsers();
   }, [navigate, user]);
 
   /**
@@ -93,30 +94,10 @@ export default function CreateGame({ user }) {
       .then(async (response) => {
         for (const player of playerList) {
           await addGameToProfile(player, response.data.createGame.id);
-          navigate(`/score/${response.data.createGame.id}`);
         }
+        navigate(`/score/${response.data.createGame.id}`);
       })
       .catch((err) => console.log(err));
-  }
-
-  /**
-   * Add the newly-created game to each player's profile.
-   */
-  async function addGameToProfile(username, gameId) {
-    const userData = await API.graphql({
-      query: getUser,
-      variables: { id: username },
-    });
-    const userDetails = {
-      id: username,
-      games: userData.data.getUser.games
-        ? [...userData.data.getUser.games, gameId]
-        : gameId,
-    };
-    console.log(`adding game ${gameId} to ${username}`);
-    API.graphql({ query: updateUser, variables: { input: userDetails } }).catch(
-      (err) => console.log(err)
-    );
   }
 
   return (
