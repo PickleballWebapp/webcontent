@@ -13,9 +13,19 @@ export default function GameScore({ user }) {
   const [showCompleteModal, setCompleteModal] = useState(false);
   const [showDeleteModal, setDeleteModal] = useState(false);
 
+  const openCompleteModal = () => setCompleteModal(true);
+  const closeCompleteModal = () => setCompleteModal(false);
+  const openDeleteModal = () => setDeleteModal(true);
+  const closeDeleteModal = () => setDeleteModal(false);
+  const giveServeTeam1 = () => giveServe(true);
+  const giveServeTeam2 = () => giveServe(false);
+  const team1Add = () => updateScore(true, true);
+  const team1Subtract = () => updateScore(true, false);
+  const team2Add = () => updateScore(false, true);
+  const team2Subtract = () => updateScore(false, false);
+
   /**
    * Fetch information about game ID passed via state.
-   * @namespace apiData.data.getGame - API response.
    */
   useEffect(() => {
     async function fetchGame() {
@@ -30,7 +40,6 @@ export default function GameScore({ user }) {
 
   /**
    * Handle request to give serve to other team.
-   * @namespace apiData.data.updateGame - API response.
    */
   async function giveServe(team1: boolean) {
     const updatedRecord = {
@@ -46,7 +55,6 @@ export default function GameScore({ user }) {
 
   /**
    * Handle request to update the score of a match.
-   * @namespace apiData.data.updateGame - API response.
    */
   async function updateScore(team1: boolean, add: boolean) {
     const updatedRecord = {
@@ -67,7 +75,6 @@ export default function GameScore({ user }) {
 
   /**
    * Handle request to mark game as complete.
-   * @namespace apiData.data.updateGame - API response.
    */
   async function handleCompleteGame() {
     const updatedRecord = {
@@ -172,7 +179,7 @@ export default function GameScore({ user }) {
                         variant="success"
                         size="lg"
                         className="m-1"
-                        onClick={() => updateScore(true, true)}
+                        onClick={team1Add}
                       >
                         +1
                       </Button>
@@ -180,7 +187,7 @@ export default function GameScore({ user }) {
                         variant="primary"
                         size="lg"
                         className="m-1"
-                        onClick={() => giveServe(true)}
+                        onClick={giveServeTeam1}
                       >
                         Give Serve
                       </Button>
@@ -188,7 +195,7 @@ export default function GameScore({ user }) {
                         variant="danger"
                         size="lg"
                         className="m-1"
-                        onClick={() => updateScore(true, false)}
+                        onClick={team1Subtract}
                       >
                         -1
                       </Button>
@@ -221,7 +228,7 @@ export default function GameScore({ user }) {
                         variant="success"
                         size="lg"
                         className="m-1"
-                        onClick={() => updateScore(false, true)}
+                        onClick={team2Add}
                       >
                         +1
                       </Button>
@@ -229,7 +236,7 @@ export default function GameScore({ user }) {
                         variant="primary"
                         size="lg"
                         className="m-1"
-                        onClick={() => giveServe(false)}
+                        onClick={giveServeTeam2}
                       >
                         Give Serve
                       </Button>
@@ -237,7 +244,7 @@ export default function GameScore({ user }) {
                         variant="danger"
                         size="lg"
                         className="m-1"
-                        onClick={() => updateScore(false, false)}
+                        onClick={team2Subtract}
                       >
                         -1
                       </Button>
@@ -254,14 +261,11 @@ export default function GameScore({ user }) {
                   <Button
                     className="m-1"
                     variant="outline-primary"
-                    onClick={() => setCompleteModal(true)}
+                    onClick={openCompleteModal}
                   >
                     Mark Game as Completed
                   </Button>
-                  <Modal
-                    show={showCompleteModal}
-                    onHide={() => setCompleteModal(false)}
-                  >
+                  <Modal show={showCompleteModal} onHide={closeCompleteModal}>
                     <Modal.Header closeButton>
                       <Modal.Title>Confirm Game Completion</Modal.Title>
                     </Modal.Header>
@@ -269,15 +273,13 @@ export default function GameScore({ user }) {
                       Game completion is not reversible. Are you sure?
                     </Modal.Body>
                     <Modal.Footer>
-                      <Button
-                        variant="secondary"
-                        onClick={() => setCompleteModal(false)}
-                      >
+                      <Button variant="secondary" onClick={closeCompleteModal}>
                         Cancel
                       </Button>
                       <Button
+                        data-testid="confirm-completion"
                         variant="primary"
-                        onClick={() => handleCompleteGame()}
+                        onClick={handleCompleteGame}
                       >
                         Confirm Completion
                       </Button>
@@ -290,28 +292,22 @@ export default function GameScore({ user }) {
                 <Button
                   className="m-1"
                   variant="outline-danger"
-                  onClick={() => setDeleteModal(true)}
+                  onClick={openDeleteModal}
                 >
                   Delete Game
                 </Button>
-                <Modal
-                  show={showDeleteModal}
-                  onHide={() => setDeleteModal(false)}
-                >
+                <Modal show={showDeleteModal} onHide={closeDeleteModal}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Confirm Game Completion</Modal.Title>
+                    <Modal.Title>Confirm Game Deletion</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     Game deletion is not reversible. Are you sure?
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button
-                      variant="secondary"
-                      onClick={() => setDeleteModal(false)}
-                    >
+                    <Button variant="secondary" onClick={closeDeleteModal}>
                       Cancel
                     </Button>
-                    <Button variant="danger" onClick={() => handleDeleteGame()}>
+                    <Button variant="danger" onClick={handleDeleteGame}>
                       Confirm Deletion
                     </Button>
                   </Modal.Footer>

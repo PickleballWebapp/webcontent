@@ -16,6 +16,12 @@ export default function User({ user }) {
   const [showDeleteUserModal, setDeleteUserModal] = useState(false);
   const [newUserType, setNewUserType] = useState(UserType.PLAYER);
 
+  const closeDeleteModal = () => setDeleteUserModal(false);
+  const openDeleteModal = () => setDeleteUserModal(true);
+  const closeTypeModal = () => setUserTypeModal(false);
+  const openTypeModal = () => setUserTypeModal(true);
+
+
   /**
    * Fetch user data for either the player ID (passed via state) or for
    * the current authenticated user (if state is empty).
@@ -27,7 +33,6 @@ export default function User({ user }) {
         variables: { id: id },
       });
       setUserData(userData.data.getUser);
-
       let gameDataList = [];
       for (const game of userData.data.getUser.games || []) {
         await API.graphql({
@@ -133,23 +138,25 @@ export default function User({ user }) {
           <Row>
             <Col>
               <Button
+                data-testid="change-user"
                 className="m-0"
                 variant="outline-secondary"
-                onClick={() => setUserTypeModal(true)}
+                onClick={openTypeModal}
               >
                 Change User Type
               </Button>
               <Button
+                data-testid="delete-user"
                 className="m-1"
                 variant="outline-danger"
-                onClick={() => setDeleteUserModal(true)}
+                onClick={openDeleteModal}
               >
                 Delete User
               </Button>
             </Col>
           </Row>
         )}
-        <Modal show={showUserTypeModal} onHide={() => setUserTypeModal(false)}>
+        <Modal show={showUserTypeModal} onHide={closeTypeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Change User Type</Modal.Title>
           </Modal.Header>
@@ -176,17 +183,17 @@ export default function User({ user }) {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setUserTypeModal(false)}>
+            <Button variant="secondary" onClick={closeTypeModal}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={() => handleUserTypeChange()}>
+            <Button variant="primary" onClick={handleUserTypeChange}>
               Confirm Change
             </Button>
           </Modal.Footer>
         </Modal>
         <Modal
           show={showDeleteUserModal}
-          onHide={() => setDeleteUserModal(false)}
+          onHide={closeDeleteModal}
         >
           <Modal.Header closeButton>
             <Modal.Title>Delete User</Modal.Title>
@@ -198,11 +205,15 @@ export default function User({ user }) {
           <Modal.Footer>
             <Button
               variant="secondary"
-              onClick={() => setDeleteUserModal(false)}
+              onClick={closeDeleteModal}
             >
               Cancel
             </Button>
-            <Button variant="danger" onClick={() => handleDeleteUser()}>
+            <Button
+              data-testid="confirm-deletion"
+              variant="danger"
+              onClick={handleDeleteUser}
+            >
               Confirm Deletion
             </Button>
           </Modal.Footer>

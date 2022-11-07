@@ -15,13 +15,13 @@ import { createGame } from "./graphql/mutations";
 import { useNavigate } from "react-router-dom";
 import { UserType } from "./models";
 import { DatePicker } from "rsuite";
-import {addGameToProfile} from "./Utils";
+import { addGameToProfile } from "./Utils";
 
 export default function CreateGame({ user }) {
   let navigate = useNavigate();
   const [showAlert, setAlert] = useState(false);
   const [users, setUsers] = useState([]);
-  const [date, setDate] = useState();
+  const [date, setDate] = useState("");
 
   /**
    * Validate that user is a scorer or admin. Fetch user list
@@ -116,8 +116,8 @@ export default function CreateGame({ user }) {
               <Col className="card">
                 <h5 className="d-flex justify-content-center">Team 1</h5>
                 <Form.Group className="mb-2" controlId="selectplayer1">
-                  <Form.Label>Player 1</Form.Label>
-                  <Form.Select id="player1">
+                  <Form.Label id="p1-label">Player 1</Form.Label>
+                  <Form.Select id="player1" aria-labelledby="p1-label">
                     {users.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.name}
@@ -126,8 +126,8 @@ export default function CreateGame({ user }) {
                   </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="selectplayer2">
-                  <Form.Label>Player 2</Form.Label>
-                  <Form.Select id="player2">
+                  <Form.Label id="p2-label">Player 2</Form.Label>
+                  <Form.Select id="player2" aria-labelledby="p2-label">
                     {users.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.name}
@@ -144,8 +144,8 @@ export default function CreateGame({ user }) {
               <Col className="card">
                 <h5 className="d-flex justify-content-center">Team 2</h5>
                 <Form.Group className="mb-2" controlId="selectplayer3">
-                  <Form.Label>Player 3</Form.Label>
-                  <Form.Select id="player3">
+                  <Form.Label id="p3-label">Player 3</Form.Label>
+                  <Form.Select id="player3" aria-labelledby="p3-label">
                     {users.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.name}
@@ -154,8 +154,8 @@ export default function CreateGame({ user }) {
                   </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="selectplayer4">
-                  <Form.Label>Player 4</Form.Label>
-                  <Form.Select id="player4">
+                  <Form.Label id="p4-label">Player 4</Form.Label>
+                  <Form.Select id="player4" aria-labelledby="p4-label">
                     {users.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.name}
@@ -170,6 +170,7 @@ export default function CreateGame({ user }) {
                 <Form.Group className="mt-3 mb-3 me-3">
                   <Form.Label>Game Date</Form.Label>
                   <DatePicker
+                    data-testid="datepicker"
                     className="ms-3"
                     oneTap
                     onChange={(d) => setDate(d?.toISOString().split("T")[0])}
