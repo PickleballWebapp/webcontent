@@ -40,7 +40,7 @@ function App({ signOut }) {
       }
       setCurrentUser(userData.data.getUser || userData.data.createUser);
     }
-    dynamodbUserSearch().then((response) => console.log(response));
+    dynamodbUserSearch();
   }, []);
 
   /**

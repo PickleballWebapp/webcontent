@@ -83,7 +83,6 @@ export async function addGameToProfile(username, gameId) {
             ? [...userData.data.getUser.games, gameId]
             : gameId,
     };
-    console.log(`adding game ${gameId} to ${username}`);
     API.graphql({ query: updateUser, variables: { input: userDetails } }).catch(
         (err) => console.log(err)
     );

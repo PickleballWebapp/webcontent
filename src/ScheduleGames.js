@@ -50,20 +50,66 @@ export default function ScheduleGames({ user }) {
       return;
     }
 
-    // todo -- Validate player uniqueness
+    // Validate completion of table
     let playerArray = [];
+    for (const team of teams) {
+      if (
+        !team.user1 ||
+        team.user1 === "empty" ||
+        team.user1 === "" ||
+        !team.user2 ||
+        team.user2 === "empty" ||
+        team.user2 === ""
+      ) {
+        $("#alertBox").text("Each team must have 2 players.");
+        setAlert(true);
+        return;
+      }
+      playerArray.push(team.user1);
+      playerArray.push(team.user2);
+    }
+
+    // Validate player uniqueness
     if (new Set(playerArray).size !== playerArray.length) {
       $("#alertBox").text("All players must be unique. Please correct.");
       setAlert(true);
       return;
     }
 
-    //todo -- call round-robin algorithm
+    setAlert(false);
+
+    // todo -- call round-robin algorithm using teams array
+    // todo -- call createGame for each result of the round-robin algo
   }
 
-  // todo -- use components and pass props (name) from array
-  const addRow = () => {
-    setTeams([...teams, [users[0], users[0]]]);
+  /**
+   * Add new team to input table.
+   */
+  const addInputRow = () => {
+    const newTeam = {
+      user1: "empty",
+      user2: "empty",
+    };
+    setTeams([...teams, newTeam]);
+  };
+
+  /**
+   * Delete team from input table.
+   */
+  const deleteInputRow = (index) => {
+    const data = [...teams];
+    data.splice(index, 1);
+    setTeams(data);
+  };
+
+  /**
+   * Handle change to team's players.
+   */
+  const handleChange = (index, event, user1: boolean) => {
+    const { value } = event.target;
+    const data = [...teams];
+    data[index][`user${user1 ? "1" : "2"}`] = value;
+    setTeams(data);
   };
 
   return (
@@ -81,32 +127,63 @@ export default function ScheduleGames({ user }) {
             <Table striped bordered hover>
               <thead>
                 <tr>
+                  <th className="text-center">Team</th>
                   <th className="text-center">Player 1</th>
                   <th className="text-center">Player 2</th>
                 </tr>
               </thead>
               <tbody>
-                {teams.map((players, index) => (
-                  <tr key={index}>
-                    <td>
-                      <Form.Select size="sm">
-                        <option>Small select</option>
-                      </Form.Select>
-                    </td>
-                    <td>
-                      {" "}
-                      <Form.Select size="sm">
-                        <option>Small select</option>
-                      </Form.Select>
-                    </td>
-                  </tr>
-                ))}
+                {teams.map((data, index) => {
+                  const { user1, user2 } = data;
+                  return (
+                    <tr key={index}>
+                      <td
+                        className="text-center"
+                        style={{ cursor: "not-allowed" }}
+                        onClick={() => deleteInputRow(index)}
+                      >
+                        {index + 1}
+                      </td>
+                      <td>
+                        <Form.Select
+                          size="sm"
+                          value={user1.id}
+                          onChange={(event) => handleChange(index, event, true)}
+                        >
+                          <option key="empty" value="empty"></option>
+                          {users.map((user) => (
+                            <option key={user.id} value={user.id}>
+                              {user.name}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </td>
+                      <td>
+                        {" "}
+                        <Form.Select
+                          size="sm"
+                          value={user2.id}
+                          onChange={(event) =>
+                            handleChange(index, event, false)
+                          }
+                        >
+                          <option key="empty" value="empty"></option>
+                          {users.map((user) => (
+                            <option key={user.id} value={user.id}>
+                              {user.name}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </td>
+                    </tr>
+                  );
+                })}
                 <tr key="newRow">
                   <td
                     colSpan={5}
                     className="text-center"
                     style={{ cursor: "pointer" }}
-                    onClick={addRow}
+                    onClick={addInputRow}
                   >
                     Add Team
                   </td>
@@ -114,9 +191,11 @@ export default function ScheduleGames({ user }) {
               </tbody>
             </Table>
           </Row>
-          <Button onClick={handleSubmit} className="mb-2">
-            Submit
-          </Button>
+          <div className="d-grid gap-2">
+            <Button onClick={handleSubmit} className="mb-2">
+              Submit
+            </Button>
+          </div>
         </Col>
         <Col />
       </Row>
