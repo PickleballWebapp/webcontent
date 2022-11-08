@@ -170,6 +170,7 @@ export default function CreateGame({ user }) {
                 <Form.Group className="mt-3 mb-3 me-3">
                   <Form.Label>Game Date</Form.Label>
                   <DatePicker
+                    placeholder="Select Date"
                     data-testid="datepicker"
                     className="ms-3"
                     oneTap

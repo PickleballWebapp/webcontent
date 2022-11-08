@@ -96,7 +96,7 @@ test("Ensures all 4 players are unique", async () => {
     userEvent.selectOptions(screen.getByLabelText("Player 2"), ["user2"]);
     userEvent.selectOptions(screen.getByLabelText("Player 3"), ["user3"]);
     userEvent.selectOptions(screen.getByLabelText("Player 4"), ["user1"]);
-    fireEvent.change(screen.queryByPlaceholderText("yyyy-MM-dd"), {
+    fireEvent.change(screen.queryByPlaceholderText("Select Date"), {
       target: { value: "2022-11-07" },
     });
     fireEvent.click(screen.getByText("Submit"));
@@ -135,7 +135,7 @@ test("Validates date format", async () => {
     userEvent.selectOptions(screen.getByLabelText("Player 2"), ["user2"]);
     userEvent.selectOptions(screen.getByLabelText("Player 3"), ["user3"]);
     userEvent.selectOptions(screen.getByLabelText("Player 4"), ["user4"]);
-    fireEvent.change(screen.queryByPlaceholderText("yyyy-MM-dd"), {
+    fireEvent.change(screen.queryByPlaceholderText("Select Date"), {
       target: { value: "2022-11-abc" },
     });
     fireEvent.click(screen.getByText("Submit"));
