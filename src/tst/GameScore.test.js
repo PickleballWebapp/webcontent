@@ -130,7 +130,6 @@ test("Give serve", async () => {
       </MemoryRouter>
   );
   await act(async () => {
-    fireEvent.click(await screen.getAllByText("Give Serve")[0]);
     fireEvent.click(await screen.getAllByText("Give Serve")[1]);
   });
 });
@@ -183,19 +182,21 @@ test("Mark game as complete", async () => {
   );
   await act(async () => {
     fireEvent.click(await screen.getByText("Mark Game as Completed"));
-    API.graphql.mockResolvedValueOnce({
-      data: {
-        getGame: {
-          complete: false,
-          team1score: 7,
-          team2score: 3,
-          player1name: "p1",
-          player2name: "p2",
-          player3name: "p3",
-          player4name: "p4",
+    for(let i = 0; i < 8; i++) {
+      API.graphql.mockResolvedValueOnce({
+        data: {
+          getUser: {
+            id: "123",
+            wins: 0,
+            losses: 0,
+          },
         },
-      },
-    });
+      });
+
+    }
+  });
+  await act(async () => {
+    fireEvent.click(await screen.getByText("Confirm Completion"));
   });
 });
 
@@ -233,5 +234,18 @@ test("Delete Game", async () => {
         },
       },
     });
+  });
+  await act(async () => {
+    API.graphql.mockResolvedValueOnce({
+      data: {
+        listGames: {
+          items: []
+        },
+      },
+    });
+    fireEvent.click(await screen.getByText("Confirm Deletion"));
+  });
+  await waitFor(async () => {
+    expect(await screen.queryByText("Game Scores")).toBeInTheDocument();
   });
 });
