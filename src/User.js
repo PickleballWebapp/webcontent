@@ -14,13 +14,15 @@ export default function User({ user }) {
   const [games, setGames] = useState([]);
   const [showUserTypeModal, setUserTypeModal] = useState(false);
   const [showDeleteUserModal, setDeleteUserModal] = useState(false);
+  const [showPurgeUserModal, setPurgeUserModal] = useState(false);
   const [newUserType, setNewUserType] = useState(UserType.PLAYER);
 
   const closeDeleteModal = () => setDeleteUserModal(false);
   const openDeleteModal = () => setDeleteUserModal(true);
   const closeTypeModal = () => setUserTypeModal(false);
   const openTypeModal = () => setUserTypeModal(true);
-
+  const closePurgeModal = () => setPurgeUserModal(false);
+  const openPurgeModal = () => setPurgeUserModal(true);
 
   /**
    * Fetch user data for either the player ID (passed via state) or for
@@ -81,6 +83,24 @@ export default function User({ user }) {
     navigate("/rankings");
   };
 
+  /**
+   * Handle request to purge user history.
+   */
+  const handlePurgeData = async () => {
+    const userDetails = {
+      id: id,
+      wins: 0,
+      losses: 0,
+      games: [],
+    };
+    const userData = await API.graphql({
+      query: updateUser,
+      variables: { input: userDetails },
+    });
+    setUserData(userData.data.updateUser);
+    setPurgeUserModal(false);
+  };
+
   return (
     <Row>
       <Col sm={2} />
@@ -139,11 +159,19 @@ export default function User({ user }) {
             <Col>
               <Button
                 data-testid="change-user"
-                className="m-0"
+                className="m-1"
                 variant="outline-secondary"
                 onClick={openTypeModal}
               >
                 Change User Type
+              </Button>
+              <Button
+                data-testid="purge-user"
+                className="m-1"
+                variant="outline-warning"
+                onClick={openPurgeModal}
+              >
+                Purge Data
               </Button>
               <Button
                 data-testid="delete-user"
@@ -191,10 +219,7 @@ export default function User({ user }) {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Modal
-          show={showDeleteUserModal}
-          onHide={closeDeleteModal}
-        >
+        <Modal show={showDeleteUserModal} onHide={closeDeleteModal}>
           <Modal.Header closeButton>
             <Modal.Title>Delete User</Modal.Title>
           </Modal.Header>
@@ -203,10 +228,7 @@ export default function User({ user }) {
             cannot be undone.
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={closeDeleteModal}
-            >
+            <Button variant="secondary" onClick={closeDeleteModal}>
               Cancel
             </Button>
             <Button
@@ -215,6 +237,27 @@ export default function User({ user }) {
               onClick={handleDeleteUser}
             >
               Confirm Deletion
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal show={showPurgeUserModal} onHide={closePurgeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Purge User Data</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to purge data for {userData?.name}? This
+            action cannot be undone.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closePurgeModal}>
+              Cancel
+            </Button>
+            <Button
+              data-testid="confirm-deletion"
+              variant="warning"
+              onClick={handlePurgeData}
+            >
+              Confirm Data Purge
             </Button>
           </Modal.Footer>
         </Modal>

@@ -25,6 +25,7 @@ test("Rankings renders given correct route", async () => {
       <PathRoutes currentUser={user} />
     </MemoryRouter>
   );
+
   await waitFor(async () => {
     expect(await screen.findByText("Rankings")).toBeInTheDocument();
   });
@@ -45,11 +46,15 @@ test("Click user profile", async () => {
       },
     },
   });
+
+
   render(
-    <MemoryRouter initialEntries={["/rankings"]}>
-      <PathRoutes currentUser={user} />
-    </MemoryRouter>
+      <MemoryRouter initialEntries={["/rankings"]}>
+        <PathRoutes currentUser={user} />
+      </MemoryRouter>
   );
+
+
   await waitFor(async () => {
     API.graphql.mockResolvedValue({
       data: {
@@ -60,7 +65,7 @@ test("Click user profile", async () => {
     });
     fireEvent.click(await screen.getByText("Test user"));
   });
-  await waitFor(async () => {
+  await act(async () => {
     expect(await screen.findByText("Player Profile")).toBeInTheDocument();
   });
 });

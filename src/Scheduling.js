@@ -14,7 +14,7 @@ export default function Scheduling() {
     async function fetchGames() {
       const apiData = await API.graphql({ query: listGames });
       let filteredData = apiData.data.listGames.items.filter(
-        (game) => today - 86400000 <= new Date(game.date) && !game.complete
+        (game) => today <= new Date(game.date) && !game.complete
       );
       await setGames(filteredData);
     }

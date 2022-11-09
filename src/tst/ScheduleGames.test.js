@@ -171,11 +171,14 @@ test("Populates user list", async () => {
       },
     },
   });
-  act(() =>
+  await waitFor(() => {
     render(
-      <MemoryRouter initialEntries={["/schedule"]}>
-        <PathRoutes currentUser={adminUser} />
-      </MemoryRouter>
+        <MemoryRouter initialEntries={["/schedule"]}>
+          <PathRoutes currentUser={adminUser} />
+        </MemoryRouter>
     )
-  );
+  });
+  await waitFor(() => {
+    expect(screen.getByText("Schedule Games")).toBeInTheDocument();
+  })
 });
