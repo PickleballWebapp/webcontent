@@ -98,6 +98,7 @@ export default function User({ user }) {
       variables: { input: userDetails },
     });
     setUserData(userData.data.updateUser);
+    setGames([]);
     setPurgeUserModal(false);
   };
 

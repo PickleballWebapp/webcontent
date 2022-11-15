@@ -30,19 +30,19 @@ test("GameScore renders given correct route", async () => {
     </MemoryRouter>
   );
   await waitFor(async () => {
-    expect(await screen.findByText("Schedule Games")).toBeInTheDocument();
+    expect(await screen.findByText("Schedule Round Robin")).toBeInTheDocument();
   });
 });
 
 test("GameScore redirects for non-admin", async () => {
-  API.graphql.mockResolvedValue({
+  API.graphql.mockResolvedValueOnce({
     data: {
       listUsers: {
         items: [],
       },
     },
   });
-  API.graphql.mockResolvedValue({
+  API.graphql.mockResolvedValueOnce({
     data: {
       listGames: {
         items: [],
@@ -60,10 +60,15 @@ test("GameScore redirects for non-admin", async () => {
 });
 
 test("Add rows to table", async () => {
-  API.graphql.mockResolvedValue({
+  API.graphql.mockResolvedValueOnce({
     data: {
       listUsers: {
-        items: [],
+        items: [
+          { id: "user1", name: "user1" },
+          { id: "user2", name: "user2" },
+          { id: "user3", name: "user3" },
+          { id: "user4", name: "user4" },
+        ],
       },
     },
   });
@@ -81,7 +86,10 @@ test("Add rows to table", async () => {
   await act(async () => {
     fireEvent.click(await screen.getByText("Add Team"));
   });
-  expect(await screen.findByText("3")).toBeInTheDocument();
+  await waitFor(async () => {
+    expect(await screen.findByText("3")).toBeInTheDocument();
+
+  })
 });
 
 test("Delete rows from table", async () => {
@@ -120,7 +128,7 @@ test("Validates at least two rows exist", async () => {
     </MemoryRouter>
   );
   await act(async () => {
-    fireEvent.click(await screen.getByText("Submit"));
+    fireEvent.click(await screen.getByText("Review and Submit"));
   });
   expect(
     await screen.queryByText(
@@ -149,7 +157,7 @@ test("Validates each team is full", async () => {
     fireEvent.click(await screen.findByText("Add Team"));
   });
   await act(async () => {
-    fireEvent.click(await screen.getByText("Submit"));
+    fireEvent.click(await screen.getByText("Review and Submit"));
   });
   await waitFor(async () => {
     expect(
@@ -179,6 +187,6 @@ test("Populates user list", async () => {
     )
   });
   await waitFor(() => {
-    expect(screen.getByText("Schedule Games")).toBeInTheDocument();
+    expect(screen.getByText("Schedule Round Robin")).toBeInTheDocument();
   })
 });

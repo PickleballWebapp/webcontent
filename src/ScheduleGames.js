@@ -134,7 +134,7 @@ export default function ScheduleGames({ user }) {
       <Row>
         <Col />
         <Col xs={10} lg={8}>
-          <h1 className="text-center p-5">Schedule Games</h1>
+          <h1 className="text-center p-5">Schedule Round Robin</h1>
           <Fade in={showAlert}>
             <div>
               <Alert variant="danger" id="alertBox"></Alert>
@@ -231,6 +231,7 @@ export default function ScheduleGames({ user }) {
               <Table>
                 <thead>
                   <tr>
+                    <th>Game #</th>
                     <th>Team 1</th>
                     <th>Team 2</th>
                   </tr>
@@ -250,6 +251,7 @@ export default function ScheduleGames({ user }) {
 
                     return (
                       <tr key={gameNum}>
+                        <td>{gameNum+1}</td>
                         <td>{team1}</td>
                         <td>{team2}</td>
                       </tr>
