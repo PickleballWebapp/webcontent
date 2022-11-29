@@ -14,8 +14,10 @@ import { UserType } from "./models";
 import { API } from "aws-amplify";
 import { listUsers } from "./graphql/queries";
 import $ from "jquery";
-import { genRoundRobin } from "./Utils";
+import { addGameToProfile, genRoundRobin } from "./Utils";
 import { Modal } from "react-bootstrap";
+import { DatePicker } from "rsuite";
+import { createGame } from "./graphql/mutations";
 
 const userMap = new Map();
 
@@ -25,6 +27,7 @@ export default function ScheduleGames({ user }) {
   const [users, setUsers] = useState([]);
   const [teams, setTeams] = useState([]);
   const [roundRobin, setRoundRobin] = useState([]);
+  const [date, setDate] = useState("");
   let navigate = useNavigate();
   const handleClose = () => setModal(false);
 
@@ -86,8 +89,16 @@ export default function ScheduleGames({ user }) {
       return;
     }
 
-    setAlert(false);
+    // Validate date format
+    if (!date.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/i)) {
+      $("#alertBox").text(
+        "Date must be in the form YYYY-MM-DD. Please correct."
+      );
+      setAlert(true);
+      return;
+    }
 
+    setAlert(false);
     setRoundRobin(genRoundRobin(teams));
     setModal(true);
   }
@@ -123,10 +134,47 @@ export default function ScheduleGames({ user }) {
   };
 
   /**
-   * Create games for round-robin.
+   * Create games for round-robin in DynamoDB
    */
-  const createGames = () => {
-    console.log(roundRobin);
+  const createGames = async () => {
+    for (const round of roundRobin) {
+      for (const game of round) {
+        if (game.team1 && game.team2) {
+          const gameDetails = {
+            complete: false,
+            player1name: userMap.get(game.team1.user1),
+            player2name: userMap.get(game.team1.user2),
+            player3name: userMap.get(game.team2.user1),
+            player4name: userMap.get(game.team2.user2),
+            player1: game.team1.user1,
+            player2: game.team1.user2,
+            player3: game.team2.user1,
+            player4: game.team2.user2,
+            team1serves: true,
+            team1score: 0,
+            team2score: 0,
+            date: date,
+          };
+          let playerList = [
+            gameDetails.player1,
+            gameDetails.player2,
+            gameDetails.player3,
+            gameDetails.player4,
+          ];
+          await API.graphql({
+            query: createGame,
+            variables: { input: gameDetails },
+          })
+            .then(async (response) => {
+              for (const player of playerList) {
+                await addGameToProfile(player, response.data.createGame.id);
+              }
+            })
+            .catch((err) => console.log(err));
+        }
+      }
+    }
+    navigate("/scores");
   };
 
   return (
@@ -213,6 +261,16 @@ export default function ScheduleGames({ user }) {
             </Table>
           </Row>
           <div className="d-grid gap-2">
+            <Form.Group className="mt-3 mb-3 me-3">
+              <Form.Label>Round Robin Date</Form.Label>
+              <DatePicker
+                placeholder="Select Date"
+                data-testid="datepicker"
+                className="ms-3"
+                oneTap
+                onChange={(d) => setDate(d?.toISOString().split("T")[0])}
+              />
+            </Form.Group>
             <Button onClick={handleSubmit} className="mb-2">
               Review and Submit
             </Button>
@@ -251,7 +309,7 @@ export default function ScheduleGames({ user }) {
 
                     return (
                       <tr key={gameNum}>
-                        <td>{gameNum+1}</td>
+                        <td>{gameNum + 1}</td>
                         <td>{team1}</td>
                         <td>{team2}</td>
                       </tr>
